@@ -1,0 +1,23 @@
+import { Story, Meta } from '@storybook/react/types-6-0'
+
+import {{#if export~}} { {{ name }} } {{else~}} {{name}} {{~/if}}, { {{ name }}Props } from './
+{{~#if uppercase~}}
+  {{~name}}
+  {{~else~}}
+  {{~nameLowerCase}}
+{{~/if}}';
+
+export default {
+  title: 'CHANGE ME/{{name}}',
+  component: {{ name }},
+  parameters: {
+    layout: 'padded',
+  },
+} as Meta;
+
+const Template: Story<{{name}}Props> = (args) => <{{name}} {...args} />;
+
+export const Default = Template.bind({})
+Default.args = {
+
+} as {{name}}Props

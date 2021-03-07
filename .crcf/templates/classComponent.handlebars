@@ -1,0 +1,41 @@
+import React, { Component } from 'react';
+{{#if reactnative }}
+import { View, Text } from 'react-native';
+{{/if}}
+{{#if proptypes}}
+import PropTypes from 'prop-types';
+{{/if}}
+{{#if typescript }}
+
+{{#if export}}export {{/if}}type {{ name }}Props = {
+  //
+};
+{{/if}}
+
+{{#if export}}export {{/if}}class {{ name }} extends Component{{~#if typescript}}<{{~ name }}Props, any>{{~/if}} {
+  {{#if typescript}}public {{/if}}render() {
+    return (
+      {{#if reactnative }}
+      <View>
+        <Text>{{ name }}</Text>
+      </View>
+      {{else}}
+      <div>
+        {{ name }}
+      </div>
+      {{/if}}
+    );
+  }
+}
+
+{{#if proptypes}}
+    {{~ name }}.propTypes = {
+      //
+    };
+    {{#unless export}}
+
+    {{/unless}}
+{{/if}}
+{{#unless export }}
+export default {{ name }};
+{{/unless}}

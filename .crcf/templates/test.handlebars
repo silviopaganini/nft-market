@@ -1,0 +1,11 @@
+import { render } from '@testing-library/react'
+import {{#if export~}} { {{ name }} } {{else~}} {{name}} {{~/if}} from './
+{{~#if uppercase~}}
+  {{~name}}
+{{~else~}}
+  {{~nameLowerCase}}
+{{~/if}}';
+
+test(`Renders ${name}`, () => {
+  render(<{{ name }} />);
+});
