@@ -1,16 +1,16 @@
-import { Story, Meta } from "@storybook/react/types-6-0"
+import { Story, Meta } from '@storybook/react/types-6-0'
 
-import MetamaskLogin, { MetamaskLoginProps } from "./MetamaskLogin"
+import MetamaskLogin, { MetamaskLoginProps } from './MetamaskLogin'
 
 export default {
-  title: "CHANGE ME/MetamaskLogin",
+  title: 'Views/MetamaskLogin',
   component: MetamaskLogin,
   parameters: {
-    layout: "padded",
+    layout: 'padded',
   },
 } as Meta
 
-const Template: Story<MetamaskLoginProps> = (args) => <MetamaskLogin {...args} />
+const Template: Story<MetamaskLoginProps> = args => <MetamaskLogin {...args} />
 
 export const Default = Template.bind({})
 Default.args = {} as MetamaskLoginProps

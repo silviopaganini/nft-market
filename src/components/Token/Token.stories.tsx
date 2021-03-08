@@ -20,4 +20,6 @@ Default.args = {
     price: '1000000000000000000',
   },
   onTransfer: () => {},
+  onBuy: undefined,
+  onSale: undefined,
 } as TokenCompProps

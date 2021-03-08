@@ -41,8 +41,8 @@ const Gallery = ({ onBuyToken }: GalleryProps) => {
   }, [loadTokensForSale, user?.ownedTokens])
   return (
     <Box>
-      <Heading as="h1">Tokens on Sale</Heading>
-      <Grid gap={1} columns="1fr 1fr 1fr">
+      <Heading as="h1">Market</Heading>
+      <Grid gap={4} columns="1fr 1fr 1fr 1fr">
         {tokensOnSale?.map((i, index) => (
           <Token onBuy={onBuyTokenClick} token={i} key={index} />
         ))}

@@ -3,7 +3,7 @@ import { Heading, Container, Divider } from 'theme-ui'
 import Web3 from 'web3'
 import { recoverTypedSignatureLegacy } from 'eth-sig-util'
 import LVR from '../contracts/LVR.json'
-import { ContractDetails, Gallery, MetamaskLogin, Profile } from '../components'
+import { Gallery, MetamaskLogin, Profile } from '../components'
 import { ActionType, useStateContext } from '../state'
 import listTokensFrom from '../utils/listTokensFrom'
 
@@ -37,7 +37,7 @@ const App = () => {
         {
           type: 'string', // Any valid solidity type
           name: 'Action', // Any string label you want
-          value: 'Signed login into LVR Prototype', // The value to sign
+          value: 'Signed login into NFT Prototype', // The value to sign
         },
       ]
 
@@ -176,8 +176,6 @@ const App = () => {
               <MetamaskLogin onClickConnect={onClickConnect} />
             ) : (
               <>
-                <ContractDetails />
-                <Divider />
                 <Gallery onBuyToken={onBuyToken} />
                 <Divider />
                 <Profile onSaleToken={onSaleToken} onTransferToken={onTransferToken} />

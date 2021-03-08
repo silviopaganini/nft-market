@@ -1,16 +1,16 @@
-import { Story, Meta } from "@storybook/react/types-6-0"
+import { Story, Meta } from '@storybook/react/types-6-0'
 
-import Profile, { ProfileProps } from "./Profile"
+import Profile, { ProfileProps } from './Profile'
 
 export default {
-  title: "CHANGE ME/Profile",
+  title: 'Views/Profile',
   component: Profile,
   parameters: {
-    layout: "padded",
+    layout: 'padded',
   },
 } as Meta
 
-const Template: Story<ProfileProps> = (args) => <Profile {...args} />
+const Template: Story<ProfileProps> = args => <Profile {...args} />
 
 export const Default = Template.bind({})
 Default.args = {} as ProfileProps

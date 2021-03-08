@@ -9,7 +9,6 @@ const defaultButton = {
   paddingX: 3,
   paddingY: 2,
   outline: 'none',
-  borderRadius: '7px',
   whiteSpace: 'nowrap',
   cursor: 'pointer',
   transition: 'all 0.1s ease-out',
@@ -68,13 +67,11 @@ export default {
   },
   cards: {
     nft: {
-      borderRadius: '10px',
       bg: 'lightGray',
       border: '1px solid',
       borderColor: 'navy',
-      m: 3,
       p: 3,
-      textAlign: 'center',
+      textAlign: 'left',
     },
   },
   buttons: {
@@ -89,7 +86,6 @@ export default {
       width: '100%',
       alignItems: 'center',
       justifyContent: 'center',
-      maxWidth: 'button',
     },
 
     secondary: {
@@ -125,11 +121,10 @@ export default {
     ...Palette,
   },
   divider: {
-    sideMenu: {
-      bg: 'white20',
-      color: 'white20',
+    nft: {
+      color: 'black',
       height: 1,
-      my: 4,
+      my: 2,
     },
   },
   forms: {

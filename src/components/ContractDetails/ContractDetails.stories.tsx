@@ -1,16 +1,16 @@
-import { Story, Meta } from "@storybook/react/types-6-0"
+import { Story, Meta } from '@storybook/react/types-6-0'
 
-import ContractDetails, { ContractDetailsProps } from "./ContractDetails"
+import ContractDetails, { ContractDetailsProps } from './ContractDetails'
 
 export default {
-  title: "CHANGE ME/ContractDetails",
+  title: 'Views/ContractDetails',
   component: ContractDetails,
   parameters: {
-    layout: "padded",
+    layout: 'padded',
   },
 } as Meta
 
-const Template: Story<ContractDetailsProps> = (args) => <ContractDetails {...args} />
+const Template: Story<ContractDetailsProps> = args => <ContractDetails {...args} />
 
 export const Default = Template.bind({})
 Default.args = {} as ContractDetailsProps

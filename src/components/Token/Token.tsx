@@ -1,5 +1,5 @@
-import { FormEvent, MouseEvent, useState } from 'react'
-import { Box, Flex, Card, Button, Image, Input, Text } from 'theme-ui'
+import React, { FormEvent, MouseEvent, useState } from 'react'
+import { Box, Flex, Card, Button, Image, Input, Text, Heading, Divider } from 'theme-ui'
 import Web3 from 'web3'
 import { useStateContext } from '../../state'
 
@@ -46,27 +46,17 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
   return (
     <Card variant="nft">
       <Image
-        sx={{ width: 150, height: 150, mb: 3 }}
+        sx={{ width: '100%', mb: 1, border: '1px solid black', bg: 'white' }}
         src={`https://robohash.org/${token.uri}.png`}
       />
-      <Text>
-        UID:{' '}
-        <Text as="span" variant="text.bold">
-          {token.id}
-        </Text>
-      </Text>
-      <Text>
-        NFT Name:{' '}
-        <Text as="span" variant="text.bold">
-          {token.uri}
-        </Text>
-      </Text>
-      <Text>
-        Price:{' '}
-        <Text as="span" variant="text.bold">
+      <Heading as="h2">{token.uri}</Heading>
+      <Divider variant="divider.nft" />
+      <Box>
+        <Heading as="h3" sx={{ color: 'green', m: 0 }}>
           Ξ {Number(Web3.utils.fromWei(token.price)).toFixed(2)}
-        </Text>
-      </Text>
+        </Heading>
+        <Text sx={{ fontSize: 1 }}>Price listing</Text>
+      </Box>
       {onTransfer && (
         <Flex mt={3} sx={{ justifyContent: 'center' }}>
           {transfer && (
@@ -124,13 +114,13 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
             </Box>
           )}
           {!transfer && !onSaleActive && (
-            <>
+            <Flex sx={{ flexDirection: 'column', width: '100%', justifyContent: 'center' }}>
               <Button onClick={() => setTransfer(!transfer)} variant="tertiary">
                 Transfer
               </Button>
               {isOnSale ? (
                 <Button
-                  ml={2}
+                  mt={2}
                   onClick={() =>
                     onSale &&
                     onSale({ id: token.id, price: Web3.utils.fromWei(token.price), onSale: false })
@@ -140,31 +130,27 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
                   Remove from Sale
                 </Button>
               ) : (
-                <Button ml={2} onClick={() => setOnSale(!onSaleActive)} variant="tertiary">
+                <Button mt={2} onClick={() => setOnSale(!onSaleActive)} variant="tertiary">
                   Put Token for Sale
                 </Button>
               )}
-            </>
+            </Flex>
           )}
         </Flex>
       )}
       {onBuy && (
-        <Flex mt={3} sx={{ justifyContent: 'center' }}>
-          <Flex mt={2}>
-            <Button
-              sx={{
-                bg: 'green',
-                opacity: !!user?.ownedTokens.find(a => a.id === token.id) ? 0.5 : 1,
-                pointerEvents: !!user?.ownedTokens.find(a => a.id === token.id)
-                  ? 'none'
-                  : 'visible',
-              }}
-              onClick={onBuyClick}
-              variant="quartiary"
-            >
-              Buy Token
-            </Button>
-          </Flex>
+        <Flex mt={3} sx={{ justifyContent: 'center', width: '100%' }}>
+          <Button
+            sx={{
+              bg: 'green',
+              opacity: !!user?.ownedTokens.find(a => a.id === token.id) ? 0.5 : 1,
+              pointerEvents: !!user?.ownedTokens.find(a => a.id === token.id) ? 'none' : 'visible',
+            }}
+            onClick={onBuyClick}
+            variant="quartiary"
+          >
+            Buy Token
+          </Button>
         </Flex>
       )}
     </Card>

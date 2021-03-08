@@ -35,7 +35,7 @@ const Profile = ({ onSaleToken, onTransferToken }: ProfileProps) => {
                 ({ownedTokens.length} item)
               </Text>
             </Heading>
-            <Grid gap={1} columns="1fr 1fr">
+            <Grid gap={4} columns="1fr 1fr 1fr">
               {ownedTokens.map((t, index) => (
                 <Token
                   isOnSale={!!tokensOnSale?.find(a => a.id === t.id)}
