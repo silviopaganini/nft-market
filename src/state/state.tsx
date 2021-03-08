@@ -11,6 +11,7 @@ export interface StateContext {
   contract?: ContractProps
   user?: UserProps
   tokensOnSale?: TokenProps[]
+  ethPrice?: string
 }
 export interface Store {
   state: StateContext

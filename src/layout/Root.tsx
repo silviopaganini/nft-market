@@ -35,20 +35,18 @@ const Root = () => {
   }, [dispatch])
 
   return (
-    <>
-      <Router>
-        <Header />
-        {web3 && (
-          <Switch>
-            <PrivateRoute path="/profile" component={Profile} />
-            <Route path="/">
-              <App />
-            </Route>
-          </Switch>
-        )}
-        {error && <Error />}
-      </Router>
-    </>
+    <Router>
+      <Header />
+      {web3 && (
+        <Switch>
+          <PrivateRoute path="/profile" component={Profile} />
+          <Route path="/">
+            <App />
+          </Route>
+        </Switch>
+      )}
+      {error && <Error />}
+    </Router>
   )
 }
 

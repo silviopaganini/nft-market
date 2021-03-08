@@ -1,4 +1,4 @@
-import React, { FormEvent, MouseEvent, useState } from 'react'
+import { FormEvent, MouseEvent, useState } from 'react'
 import { Box, Flex, Card, Button, Image, Input, Text, Heading, Divider } from 'theme-ui'
 import Web3 from 'web3'
 import { useStateContext } from '../../state'
@@ -23,7 +23,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
   const [address, setAddress] = useState<string>('')
   const [price, setPrice] = useState<string>('')
   const {
-    state: { user },
+    state: { user, ethPrice },
   } = useStateContext()
 
   const onTransferClick = (e: FormEvent | MouseEvent) => {
@@ -43,6 +43,11 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
     onSale && onSale({ id: token.id, price, onSale: true })
   }
 
+  const tokenPriceEth = new Intl.NumberFormat('us-GB', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(Number(Web3.utils.fromWei(token.price)) * Number(ethPrice))
+
   return (
     <Card variant="nft">
       <Image
@@ -53,10 +58,13 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
         <Heading as="h2">{token.uri}</Heading>
         <Divider variant="divider.nft" />
         <Box>
+          <Text sx={{ color: 'midGray', fontSize: 1, fontWeight: 'bold' }}>Price</Text>
           <Heading as="h3" sx={{ color: 'green', m: 0, fontWeight: 'bold' }}>
-            Ξ {Number(Web3.utils.fromWei(token.price)).toFixed(2)}
+            Ξ {Number(Web3.utils.fromWei(token.price)).toFixed(2)}{' '}
+            <Text sx={{ color: 'navy' }} as="span" variant="text.body">
+              ({tokenPriceEth})
+            </Text>
           </Heading>
-          <Text sx={{ color: 'midGray', fontSize: 1 }}>Price listing</Text>
         </Box>
 
         {onTransfer && (

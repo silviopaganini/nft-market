@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Heading, Container } from 'theme-ui'
 import { Gallery, MetamaskLogin } from '../components'
-import { useStateContext } from '../state'
+import { ActionType, useStateContext } from '../state'
 import { getContract, signUser, updateUser } from '../actions'
 
 // TODO: Show event of token sold
+
+const { REACT_APP_APIETHERSCAN } = process.env
 
 const App = () => {
   const { state, dispatch } = useStateContext()
@@ -15,6 +17,15 @@ const App = () => {
     if (!state || !web3) return
     try {
       const [userAccount] = await web3.eth.getAccounts()
+
+      const {
+        result: { ethusd },
+      } = await (
+        await fetch(
+          `https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${REACT_APP_APIETHERSCAN}`
+        )
+      ).json()
+      dispatch({ type: ActionType.ETH_PRICE, payload: ethusd })
 
       const contract = await getContract({ state, dispatch })
 

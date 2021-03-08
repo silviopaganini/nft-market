@@ -9,10 +9,12 @@ export enum ActionType {
   WEB3_INIT = 'Web3 Init',
   CONTRACT = 'Contract',
   LOAD_TOKEN_SALE = 'Load tokens on Sale',
+  ETH_PRICE = 'Eth price',
 }
 
 export type Action =
   | { type: ActionType.WEB3_INIT; payload: Web3 }
+  | { type: ActionType.ETH_PRICE; payload: string }
   | { type: ActionType.CONTRACT; payload: ContractProps }
   | { type: ActionType.UPDATE_USER; payload: UserProps }
   | { type: ActionType.SIGN_OUT; payload?: any }
@@ -20,6 +22,8 @@ export type Action =
 
 export const reducer = (state: StateContext, action: Action) => {
   switch (action.type) {
+    case ActionType.ETH_PRICE:
+      return { ...state, ethPrice: action.payload }
     case ActionType.UPDATE_USER:
       return { ...state, isAuthenticated: true, user: action.payload }
     case ActionType.SIGN_OUT:
