@@ -18,19 +18,20 @@ const defaultButton = {
 } as SxStyleProp
 
 export const Palette = {
-  text: '#000',
+  text: '#FFF',
   white: '#fff',
-  background: '#F7F9FA',
+  background: '#333',
   primary: '#111',
-  secondary: '#222',
+  secondary: '#333',
   gray: '#F7F9FA',
   lightGray: '#e0e0e0',
   midGray: '#333',
   lightBlue: '#EFF7FF',
-  navy: '#333',
-  green: '#08A045',
+  navy: '#e0e0e0',
+  green: 'rgb(99, 255, 203)',
   amber: '#D58408',
-  red: '#666',
+  red: '#999',
+  muted: '#999',
   transparent: 'transparent',
   white20: 'rgba(255, 255, 255, .2)',
   black66: 'rgba(0, 0, 0, .66)',
@@ -53,13 +54,14 @@ export default {
   fontSizes: [10, 12, 16, 26, 36, 50, 75],
   fonts: {
     body:
-      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     heading: 'inherit',
   },
   layout: {
     container: {
       py: 4,
       px: 3,
+      pb: 10,
     },
   },
   sizes: {
@@ -67,9 +69,9 @@ export default {
   },
   cards: {
     nft: {
-      bg: 'lightGray',
+      bg: 'background',
       border: '1px solid',
-      borderColor: 'navy',
+      borderColor: 'muted',
       textAlign: 'left',
     },
   },
@@ -94,14 +96,13 @@ export default {
     },
     tertiary: {
       variant: 'buttons.secondary',
-      bg: 'navy',
       color: 'white',
-      minWidth: 'auto',
+      bg: 'primary',
     },
     quartiary: {
       variant: 'buttons.tertiary',
-      bg: 'navy',
-      color: 'white',
+      bg: 'green',
+      color: 'black',
       minWidth: 'auto',
       py: 2,
     },
@@ -121,7 +122,7 @@ export default {
   },
   divider: {
     nft: {
-      color: 'black',
+      color: 'muted',
       height: 1,
       my: 2,
     },
@@ -132,7 +133,7 @@ export default {
       paddingY: 2,
       borderRadius: '5px',
       bg: 'white',
-      color: 'text',
+      color: 'primary',
     },
   },
   text: {

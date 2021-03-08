@@ -1,4 +1,3 @@
-import React from 'react'
 import { Image, Flex, Heading, Button } from 'theme-ui'
 
 export type MetamaskLoginProps = {
@@ -12,7 +11,11 @@ const MetamaskLogin = ({ onClickConnect }: MetamaskLoginProps) => {
         Before we start, we need to connect to you Metamask account{' '}
       </Heading>
 
-      <Button sx={{ maxWidth: 200, mt: 5 }} variant="primary" onClick={onClickConnect}>
+      <Button
+        sx={{ maxWidth: 200, mt: 5, px: 6, py: 4 }}
+        variant="primary"
+        onClick={onClickConnect}
+      >
         <Image
           sx={{ width: 35, height: 35 }}
           mr={3}

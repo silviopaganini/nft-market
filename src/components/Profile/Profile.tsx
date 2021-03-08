@@ -121,18 +121,22 @@ const Profile = () => {
   return (
     <Box>
       <Heading as="h1">My Profile</Heading>
-      <Grid columns="1fr 1fr" sx={{ gap: '10px 20px' }}>
-        <Heading as="h2">Address</Heading>
-        <Heading as="h2">Balance</Heading>
+      <Grid columns="1fr 1fr" sx={{ gap: '0 20px' }}>
+        <Heading as="h4" sx={{ color: 'green' }}>
+          Address
+        </Heading>
+        <Heading as="h4" sx={{ color: 'green' }}>
+          Balance
+        </Heading>
         <Text>{address}</Text>
         <Text>Ξ {balance}</Text>
       </Grid>
-
+      <Divider variant="divider.nft" sx={{ my: 7 }} />
       <Box my={5}>
         {ownedTokens && ownedTokens.length > 0 ? (
           <Box>
             <Heading as="h2">
-              Tokens owned{' '}
+              My items{' '}
               <Text variant="text.body" as="span">
                 ({ownedTokens.length} item)
               </Text>
@@ -157,7 +161,7 @@ const Profile = () => {
           )
         )}
       </Box>
-      <Divider variant="divider.nft" />
+      <Divider variant="divider.nft" sx={{ my: 7 }} />
       <Heading as="h2">Activity</Heading>
       {history.map((activity, index) => (
         <ActivityLine key={index} activity={activity} />

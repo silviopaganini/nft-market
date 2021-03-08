@@ -58,7 +58,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
         <Heading as="h2">{token.uri}</Heading>
         <Divider variant="divider.nft" />
         <Box>
-          <Text sx={{ color: 'midGray', fontSize: 1, fontWeight: 'bold' }}>Price</Text>
+          <Text sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>Price</Text>
           <Heading as="h3" sx={{ color: 'green', m: 0, fontWeight: 'bold' }}>
             Ξ {Number(Web3.utils.fromWei(token.price)).toFixed(2)}{' '}
             <Text sx={{ color: 'navy' }} as="span" variant="text.body">
