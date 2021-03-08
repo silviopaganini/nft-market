@@ -20,49 +20,45 @@ const Profile = () => {
   const { web3, contract, user, tokensOnSale } = state
   const [history, setHistory] = useState<History[]>([])
 
+  const getHistory = useCallback(
+    async (address: string, event: string) => {
+      if (!contract?.payload || !web3) return []
+
+      try {
+        const events = await await contract?.payload.getPastEvents(event, {
+          fromBlock: 0,
+          toBlock: 'latest',
+          filter: {
+            owner: address,
+          },
+        })
+
+        return await Promise.all<History>(
+          events.map(async (item: any) => {
+            const timestamp = (await web3.eth.getBlock(item.blockNumber)).timestamp
+            const historyItem = {
+              from: item.returnValues.from,
+              to: item.returnValues.to,
+              tokenId: await contract.payload.methods.tokenURI(item.returnValues.tokenid).call(),
+              time: new Date(Number(timestamp) * 1000),
+            }
+            return historyItem
+          })
+        )
+      } catch (e) {
+        console.log(e)
+        return []
+      }
+    },
+    [contract?.payload, web3]
+  )
+
   const getActivity = useCallback(
     async (address: string) => {
       if (!contract?.payload || !web3) return
       try {
-        const boughtFrom = await Promise.all<History>(
-          await (
-            await contract?.payload.getPastEvents('Bought', {
-              fromBlock: 0,
-              toBlock: 'latest',
-              filter: {
-                owner: address,
-              },
-            })
-          ).reduce(async (acc: History[], item: any) => {
-            const historyItem = {
-              from: item.returnValues.from,
-              tokenId: await contract.payload.methods.tokenURI(item.returnValues.tokenid).call(),
-              time: new Date(Number((await web3?.eth.getBlock(item.blockNumber)).timestamp) * 1000),
-            }
-            acc.push(historyItem)
-            return acc
-          }, [] as History[])
-        )
-
-        const soldTo = await Promise.all<History>(
-          await (
-            await contract?.payload.getPastEvents('Sold', {
-              fromBlock: 0,
-              toBlock: 'latest',
-              filter: {
-                owner: address,
-              },
-            })
-          ).reduce(async (acc: History[], item: any) => {
-            const historyItem = {
-              to: item.returnValues.to,
-              tokenId: await contract.payload.methods.tokenURI(item.returnValues.tokenid).call(),
-              time: new Date(Number((await web3?.eth.getBlock(item.blockNumber)).timestamp) * 1000),
-            }
-            acc.push(historyItem)
-            return acc
-          }, [] as History[])
-        )
+        const boughtFrom = await getHistory(address, 'Bought')
+        const soldTo = await getHistory(address, 'Sold')
 
         const sortedHistory = [...boughtFrom, ...soldTo].sort(
           (a, b) => b.time.getTime() - a.time.getTime()
@@ -73,7 +69,7 @@ const Profile = () => {
         console.log(e)
       }
     },
-    [contract?.payload, web3]
+    [contract?.payload, web3, getHistory]
   )
 
   useEffect(() => {
