@@ -1,24 +1,17 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Text, Box, Heading, Grid, Divider } from 'theme-ui'
-import { Token } from '..'
+import { Token, ActivityLine } from '..'
 import { updateUser } from '../../actions'
 import { useStateContext } from '../../state'
 import { toWei } from '../../utils'
+import { ActivityHistory } from '../ActivityLine/ActivityLine'
 
 export type ProfileProps = {}
-
-type History = {
-  owner?: string
-  tokenId: string
-  to?: string
-  from?: string
-  time: Date
-}
 
 const Profile = () => {
   const { state, dispatch } = useStateContext()
   const { web3, contract, user, tokensOnSale } = state
-  const [history, setHistory] = useState<History[]>([])
+  const [history, setHistory] = useState<ActivityHistory[]>([])
 
   const getHistory = useCallback(
     async (address: string, event: string) => {
@@ -33,7 +26,7 @@ const Profile = () => {
           },
         })
 
-        return await Promise.all<History>(
+        return await Promise.all<ActivityHistory>(
           events.map(async (item: any) => {
             const timestamp = (await web3.eth.getBlock(item.blockNumber)).timestamp
             const historyItem = {
@@ -166,34 +159,8 @@ const Profile = () => {
       </Box>
       <Divider variant="divider.nft" />
       <Heading as="h2">Activity</Heading>
-      {history.map((h, index) => (
-        <Box
-          key={index}
-          sx={{ py: 3, px: 2, borderBottom: '1px solid', borderBottomColor: 'lightGray' }}
-        >
-          {h.from && (
-            <Text>
-              <Text as="span" sx={{ fontWeight: 'bold', color: 'green' }}>
-                {'>'}
-              </Text>
-              <Text as="span" ml={2}>
-                Bought <b>{h.tokenId}</b> from <b>{h.from}</b> at{' '}
-                {h.time.toLocaleDateString('en-GB')} - {h.time.toLocaleTimeString('en-GB')}
-              </Text>
-            </Text>
-          )}
-          {h.to && (
-            <Text>
-              <Text as="span" sx={{ fontWeight: 'bold', color: 'amber' }}>
-                {'<'}
-              </Text>
-              <Text as="span" ml={2}>
-                Sold <b>{h.tokenId}</b> to <b>{h.to}</b> at {h.time.toLocaleDateString('en-GB')} -{' '}
-                {h.time.toLocaleTimeString('en-GB')}
-              </Text>
-            </Text>
-          )}
-        </Box>
+      {history.map((activity, index) => (
+        <ActivityLine key={index} activity={activity} />
       ))}
     </Box>
   )
