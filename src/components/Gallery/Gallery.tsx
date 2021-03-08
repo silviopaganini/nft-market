@@ -12,7 +12,7 @@ const Gallery = () => {
 
   const onConfirmTransfer = async () => {
     if (!user || !user.address || !web3) return
-    await updateUser({ contract, userAccount: user.address, state, dispatch })
+    await updateUser({ contract: contract?.payload, userAccount: user.address, state, dispatch })
   }
 
   const onBuyToken = async ({ id, price }: { id: string; price: string }) => {

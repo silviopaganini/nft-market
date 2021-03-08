@@ -16,7 +16,7 @@ const Profile = () => {
 
   const onConfirmTransfer = async () => {
     if (!user || !user.address || !web3) return
-    await updateUser({ contract, userAccount: user.address, state, dispatch })
+    await updateUser({ contract: contract?.payload, userAccount: user.address, state, dispatch })
   }
 
   const onTransferToken = ({ id, address }: { id: string; address: string }) => {

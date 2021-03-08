@@ -15,6 +15,7 @@
     "@types/react-dom": "^17.0.0",
     "dotenv": "^8.2.0",
     "eth-sig-util": "^3.0.1",
+    "jdenticon": "^3.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",

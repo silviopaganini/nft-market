@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Heading, Container, Divider } from 'theme-ui'
-import { Gallery, MetamaskLogin, Profile } from '../components'
+import { Heading, Container } from 'theme-ui'
+import { Gallery, MetamaskLogin } from '../components'
 import { useStateContext } from '../state'
 import { getContract, signUser, updateUser } from '../actions'
 
@@ -28,25 +28,21 @@ const App = () => {
   }
 
   return (
-    <>
-      <Container>
-        {error ? (
-          <Heading as="h3">Please connect to Metamask.</Heading>
-        ) : (
-          <>
-            {!user || !user.address ? (
-              <MetamaskLogin onClickConnect={onClickConnect} />
-            ) : (
-              <>
-                <Gallery />
-                <Divider />
-                <Profile />
-              </>
-            )}
-          </>
-        )}
-      </Container>
-    </>
+    <Container>
+      {error ? (
+        <Heading as="h3">Please connect to Metamask.</Heading>
+      ) : (
+        <>
+          {!user || !user.address ? (
+            <MetamaskLogin onClickConnect={onClickConnect} />
+          ) : (
+            <>
+              <Gallery />
+            </>
+          )}
+        </>
+      )}
+    </Container>
   )
 }
 

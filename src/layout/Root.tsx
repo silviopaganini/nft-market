@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import { App, Error } from './'
+import { App, Error, Profile } from './'
 import { Header } from '../components'
 import { ActionType, useStateContext } from '../state'
 import getWeb3 from '../utils/web3'
@@ -39,6 +39,9 @@ const Root = () => {
         <Header />
         {web3 && (
           <Switch>
+            <Route path="/profile">
+              <Profile />
+            </Route>
             <Route path="/">
               <App />
             </Route>
