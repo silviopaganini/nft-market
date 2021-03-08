@@ -1,4 +1,5 @@
-import { Text, Box, Heading, Grid } from 'theme-ui'
+import { useCallback, useEffect, useState } from 'react'
+import { Text, Box, Heading, Grid, Divider } from 'theme-ui'
 import { Token } from '..'
 import { updateUser } from '../../actions'
 import { useStateContext } from '../../state'
@@ -6,9 +7,79 @@ import { toWei } from '../../utils'
 
 export type ProfileProps = {}
 
+type History = {
+  owner?: string
+  tokenId: string
+  to?: string
+  from?: string
+  time: Date
+}
+
 const Profile = () => {
   const { state, dispatch } = useStateContext()
   const { web3, contract, user, tokensOnSale } = state
+  const [history, setHistory] = useState<History[]>([])
+
+  const getActivity = useCallback(
+    async (address: string) => {
+      if (!contract?.payload || !web3) return
+      try {
+        const boughtFrom = await Promise.all<History>(
+          await (
+            await contract?.payload.getPastEvents('Bought', {
+              fromBlock: 0,
+              toBlock: 'latest',
+              filter: {
+                owner: address,
+              },
+            })
+          ).reduce(async (acc: History[], item: any) => {
+            const historyItem = {
+              from: item.returnValues.from,
+              tokenId: await contract.payload.methods.tokenURI(item.returnValues.tokenid).call(),
+              time: new Date(Number((await web3?.eth.getBlock(item.blockNumber)).timestamp) * 1000),
+            }
+            acc.push(historyItem)
+            return acc
+          }, [] as History[])
+        )
+
+        const soldTo = await Promise.all<History>(
+          await (
+            await contract?.payload.getPastEvents('Sold', {
+              fromBlock: 0,
+              toBlock: 'latest',
+              filter: {
+                owner: address,
+              },
+            })
+          ).reduce(async (acc: History[], item: any) => {
+            const historyItem = {
+              to: item.returnValues.to,
+              tokenId: await contract.payload.methods.tokenURI(item.returnValues.tokenid).call(),
+              time: new Date(Number((await web3?.eth.getBlock(item.blockNumber)).timestamp) * 1000),
+            }
+            acc.push(historyItem)
+            return acc
+          }, [] as History[])
+        )
+
+        const sortedHistory = [...boughtFrom, ...soldTo].sort(
+          (a, b) => b.time.getTime() - a.time.getTime()
+        )
+
+        setHistory(sortedHistory)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    [contract?.payload, web3]
+  )
+
+  useEffect(() => {
+    if (!user || !contract) return
+    getActivity(user.address)
+  }, [contract, user, getActivity])
 
   if (!user) return null
 
@@ -97,6 +168,37 @@ const Profile = () => {
           )
         )}
       </Box>
+      <Divider variant="divider.nft" />
+      <Heading as="h2">Activity</Heading>
+      {history.map((h, index) => (
+        <Box
+          key={index}
+          sx={{ py: 3, px: 2, borderBottom: '1px solid', borderBottomColor: 'lightGray' }}
+        >
+          {h.from && (
+            <Text>
+              <Text as="span" sx={{ fontWeight: 'bold', color: 'green' }}>
+                {'>'}
+              </Text>
+              <Text as="span" ml={2}>
+                Bought <b>{h.tokenId}</b> from <b>{h.from}</b> at{' '}
+                {h.time.toLocaleDateString('en-GB')} - {h.time.toLocaleTimeString('en-GB')}
+              </Text>
+            </Text>
+          )}
+          {h.to && (
+            <Text>
+              <Text as="span" sx={{ fontWeight: 'bold', color: 'amber' }}>
+                {'<'}
+              </Text>
+              <Text as="span" ml={2}>
+                Sold <b>{h.tokenId}</b> to <b>{h.to}</b> at {h.time.toLocaleDateString('en-GB')} -{' '}
+                {h.time.toLocaleTimeString('en-GB')}
+              </Text>
+            </Text>
+          )}
+        </Box>
+      ))}
     </Box>
   )
 }

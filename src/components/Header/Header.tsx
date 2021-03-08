@@ -18,7 +18,7 @@ const Header = () => {
         src="/static/logo.png"
       />
       <Heading sx={{ ml: 2, color: 'white' }} as="h4">
-        Ethereum prototype | Metamask + ERC721 Contract
+        Metamask + ERC721 Prototype
       </Heading>
       <UserMenu />
     </Flex>
