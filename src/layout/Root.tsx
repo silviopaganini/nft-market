@@ -5,6 +5,7 @@ import { App, Error, Profile } from './'
 import { Header } from '../components'
 import { ActionType, useStateContext } from '../state'
 import getWeb3 from '../utils/web3'
+import { PrivateRoute } from '../components/PrivateRoute'
 
 const Root = () => {
   const {
@@ -39,9 +40,7 @@ const Root = () => {
         <Header />
         {web3 && (
           <Switch>
-            <Route path="/profile">
-              <Profile />
-            </Route>
+            <PrivateRoute path="/profile" component={Profile} />
             <Route path="/">
               <App />
             </Route>
