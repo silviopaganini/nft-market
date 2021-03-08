@@ -1,17 +1,42 @@
-import React, { useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Box, Grid, Heading } from 'theme-ui'
+import { updateUser } from '../../actions'
 import { ActionType, useStateContext } from '../../state'
 import Token, { TokenProps } from '../Token'
 
-export type GalleryProps = {
-  onBuyToken?({ id, price }: { id: string; price: string }): void
-}
+export type GalleryProps = {}
 
-const Gallery = ({ onBuyToken }: GalleryProps) => {
-  const {
-    state: { contract, user, tokensOnSale },
-    dispatch,
-  } = useStateContext()
+const Gallery = () => {
+  const { state, dispatch } = useStateContext()
+  const { web3, contract, user, tokensOnSale } = state
+
+  const onConfirmTransfer = async () => {
+    if (!user || !user.address || !web3) return
+    await updateUser({ contract, userAccount: user.address, state, dispatch })
+  }
+
+  const onBuyToken = async ({ id, price }: { id: string; price: string }) => {
+    if (!contract?.payload) return
+
+    try {
+      contract.payload.methods
+        .purchaseToken(id)
+        .send({ from: user?.address, value: price })
+        .on('transactionHash', function (hash: any) {
+          console.log(hash)
+        })
+        .on('receipt', onConfirmTransfer)
+        .on('confirmation', onConfirmTransfer)
+        .on('error', console.error)
+
+      // .on('transactionHash', function (hash: any) {
+      //   console.log(hash)
+      // })
+      // .on('receipt', onConfirmTransfer)
+      // .on('confirmation', onConfirmTransfer)
+      // .on('error', console.error)
+    } catch (e) {}
+  }
 
   const loadTokensForSale = useCallback(async () => {
     try {

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
 import { App, Error } from './'
 import { Header } from '../components'
 import { ActionType, useStateContext } from '../state'
@@ -33,9 +35,17 @@ const Root = () => {
 
   return (
     <>
-      <Header />
-      {web3 && <App />}
-      {error && <Error />}
+      <Router>
+        <Header />
+        {web3 && (
+          <Switch>
+            <Route path="/">
+              <App />
+            </Route>
+          </Switch>
+        )}
+        {error && <Error />}
+      </Router>
     </>
   )
 }
