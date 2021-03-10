@@ -32,7 +32,8 @@ const Profile = () => {
             const historyItem = {
               from: item.returnValues.from,
               to: item.returnValues.to,
-              tokenId: await contract.payload.methods.tokenURI(item.returnValues.tokenid).call(),
+              name: (await contract.payload.methods.tokenMeta(item.returnValues.tokenid).call())
+                .name,
               time: new Date(Number(timestamp) * 1000),
             }
             return historyItem

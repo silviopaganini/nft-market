@@ -4,8 +4,6 @@ import { Gallery, MetamaskLogin } from '../components'
 import { ActionType, useStateContext } from '../state'
 import { getContract, signUser, updateUser } from '../actions'
 
-// TODO: Show event of token sold
-
 const { REACT_APP_APIETHERSCAN } = process.env
 
 const App = () => {
@@ -28,7 +26,6 @@ const App = () => {
       dispatch({ type: ActionType.ETH_PRICE, payload: ethusd })
 
       const contract = await getContract({ state, dispatch })
-
       await signUser(userAccount)
 
       await updateUser({ contract, userAccount, state, dispatch })

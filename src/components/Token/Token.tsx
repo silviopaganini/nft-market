@@ -7,6 +7,7 @@ export type TokenProps = {
   id: string
   uri: string
   price: string
+  name: string
 }
 
 export type TokenCompProps = {
@@ -52,10 +53,10 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
     <Card variant="nft">
       <Image
         sx={{ width: '100%', bg: 'white', borderBottom: '1px solid black' }}
-        src={`https://robohash.org/${token.uri}.png`}
+        src={`https://ipfs.io/ipfs/${token.uri}`}
       />
       <Box p={3} pt={2}>
-        <Heading as="h2">{token.uri}</Heading>
+        <Heading as="h2">{token.name}</Heading>
         <Divider variant="divider.nft" />
         <Box>
           <Text sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>Price</Text>

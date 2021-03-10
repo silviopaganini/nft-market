@@ -43,7 +43,7 @@ const Gallery = () => {
       const tokensForSale = (await contract?.payload.methods.getAllOnSale().call()).reduce(
         (acc: TokenProps[], b: any) => {
           if (b.id !== '0') {
-            acc.push({ id: b.id, price: b.price, uri: b.uri })
+            acc.push({ id: b.id, price: b.price, name: b.name, uri: b.uri })
           }
 
           return acc

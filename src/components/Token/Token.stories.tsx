@@ -18,6 +18,7 @@ Default.args = {
     id: '1',
     uri: 'token1',
     price: '1000000000000000000',
+    name: 'Token 1',
   },
   onTransfer: () => {},
   onBuy: undefined,

@@ -16,6 +16,7 @@
     "dotenv": "^8.2.0",
     "eth-sig-util": "^3.0.1",
     "jdenticon": "^3.1.0",
+    "node-fetch": "^2.6.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",

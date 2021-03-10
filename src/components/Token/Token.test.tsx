@@ -6,6 +6,7 @@ test(`Renders ${name}`, () => {
     <Token
       token={{
         id: '1',
+        name: 'Token 1',
         uri: 'token1',
         price: '1000000000000000000',
       }}

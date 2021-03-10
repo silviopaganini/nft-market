@@ -13,36 +13,25 @@ contract LVR is ERC721, Ownable {
     event Bought(address indexed owner,address indexed from, uint256 tokenid);
     event Sold(address indexed owner, address indexed to, uint256 tokenid);
 
-    // event Sent(address indexed payee, uint256 amount, uint256 balance);
-    // event Received(address indexed payer, uint tokenId, uint256 amount, uint256 balance);
-
-    mapping (uint256 => uint256) private _tokenPrices;
+    mapping (uint256 => TokenMeta) private _tokenMeta;
     mapping (uint256 => bool) private _tokenOnSale;
 
-    struct TokenProps {
+    struct TokenMeta {
         uint256 id;
         uint256 price;
+        string name;
         string uri;
     }
 
-    constructor() ERC721("LVR", "LVR") {
-        _tokenIds.increment();
+    constructor() ERC721("LVR", "LVR") {}
 
-        // Create unicorn token
-        uint256 newItemId = _tokenIds.current();
-        _mint(msg.sender, newItemId);
-        _setTokenURI(newItemId, "unicorn");
-        _tokenOnSale[newItemId] = false;
-    }
-
-    function getAllOnSale () public view virtual returns( TokenProps[] memory ) {
-        TokenProps[] memory tokensOnSale = new TokenProps[](_tokenIds.current());
+    function getAllOnSale () public view virtual returns( TokenMeta[] memory ) {
+        TokenMeta[] memory tokensOnSale = new TokenMeta[](_tokenIds.current());
         uint256 counter = 0;
 
         for(uint i = 1; i < _tokenIds.current() + 1; i++) {
             if(_tokenOnSale[i] == true) {
-                TokenProps memory token = TokenProps(i, _tokenPrices[i], tokenURI(i));
-                tokensOnSale[counter] = token;
+                tokensOnSale[counter] = _tokenMeta[i];
                 counter++;
             }
         }
@@ -68,20 +57,30 @@ contract LVR is ERC721, Ownable {
 
     /**
      * @dev sets maps token to its price
-     * @param tokenId uint256 token ID (token number)
+     * @param _tokenId uint256 token ID (token number)
      * @param _price uint256 token price
      * 
      * Requirements: 
      * `tokenId` must exist
      */
-    function setTokenPrice(uint256 tokenId, uint256 _price) public {
-        require(_exists(tokenId), "ERC721Metadata: Price set of nonexistent token");
-        _tokenPrices[tokenId] = _price;
+    function setTokenPrice(uint256 _tokenId, uint256 _price) public {
+        require(_exists(_tokenId), "ERC721Metadata: Price set of nonexistent token");
+        _tokenMeta[_tokenId].price = _price;
     }
 
     function tokenPrice(uint256 tokenId) public view virtual returns (uint256) {
         require(_exists(tokenId), "ERC721Metadata: Price query for nonexistent token");
-        return _tokenPrices[tokenId];
+        return _tokenMeta[tokenId].price;
+    }
+
+    function _setTokenMeta(uint256 _tokenId, TokenMeta memory _meta) private {
+        require(_exists(_tokenId));
+        _tokenMeta[_tokenId] = _meta;
+    }
+
+    function tokenMeta(uint256 _tokenId) public view returns (TokenMeta memory) {
+        require(_exists(_tokenId));
+        return _tokenMeta[_tokenId];
     }
 
     /**
@@ -90,7 +89,7 @@ contract LVR is ERC721, Ownable {
      */
     function purchaseToken(uint256 _tokenId) public payable {
         require(msg.sender != address(0) && msg.sender != ownerOf(_tokenId));
-        require(msg.value >= _tokenPrices[_tokenId]);
+        require(msg.value >= _tokenMeta[_tokenId].price);
         address tokenSeller = ownerOf(_tokenId);
 
         payable(tokenSeller).transfer(msg.value);
@@ -103,7 +102,13 @@ contract LVR is ERC721, Ownable {
         emit Sold(tokenSeller, msg.sender, _tokenId);
     }
 
-    function mintCollectable(address _owner, string memory _tokenURI, uint256 _price, bool _sale)
+    function mintCollectable(
+        address _owner, 
+        string memory _tokenURI, 
+        string memory _name, 
+        uint256 _price, 
+        bool _sale
+    )
         public
         returns (uint256)
     {
@@ -114,7 +119,9 @@ contract LVR is ERC721, Ownable {
         uint256 newItemId = _tokenIds.current();
         _mint(_owner, newItemId);
         _setTokenURI(newItemId, _tokenURI);
-        setTokenPrice(newItemId, _price);
+
+        TokenMeta memory meta = TokenMeta(newItemId, _price, _name, _tokenURI);
+        _setTokenMeta(newItemId, meta);
         _tokenOnSale[newItemId] = _sale;
 
         return newItemId;
