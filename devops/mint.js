@@ -1,6 +1,6 @@
 const colors = require('colors')
 const Web3 = require('web3')
-const BCGNFT = artifacts.require('LVR.sol')
+const Contract = artifacts.require('LVR1155.sol')
 
 const { argv } = require('yargs')
   .usage(`${colors.yellow('Usage: ')}truffle exec start [options]`)
@@ -40,7 +40,7 @@ const start = async callback => {
   const { address, uri, price, sale } = argv
 
   try {
-    const contract = await BCGNFT.deployed()
+    const contract = await Contract.deployed()
 
     const priceWei = Web3.utils.toWei(price, 'ether')
     const result = await contract.mintCollectable(address, uri, priceWei, sale)
