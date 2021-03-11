@@ -13,6 +13,11 @@ const getContract = async ({ state, dispatch }: Props) => {
 
     //@ts-ignore
     const deployedNetwork = LVR.networks[networkId]
+
+    if (!deployedNetwork) {
+      throw new Error('The network you selected is no supported yet.')
+    }
+
     const contract = new web3.eth.Contract(
       //@ts-ignore
       LVR.abi,
@@ -30,6 +35,7 @@ const getContract = async ({ state, dispatch }: Props) => {
       payload: {
         payload: contract,
         details: {
+          networkId,
           address,
           name,
           symbol,

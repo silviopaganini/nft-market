@@ -13,6 +13,7 @@ export type ContractPropsDetails = {
   symbol?: string
   totalSupply?: number
   address?: string
+  networkId?: string | number
 }
 
 export type ContractProps = {

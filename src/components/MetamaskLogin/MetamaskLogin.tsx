@@ -1,4 +1,4 @@
-import { Image, Flex, Heading, Button } from 'theme-ui'
+import { Image, Flex, Button } from 'theme-ui'
 
 export type MetamaskLoginProps = {
   onClickConnect(): void
@@ -7,10 +7,6 @@ export type MetamaskLoginProps = {
 const MetamaskLogin = ({ onClickConnect }: MetamaskLoginProps) => {
   return (
     <Flex sx={{ flexDirection: 'column', alignItems: 'center' }}>
-      <Heading as="h3" sx={{ textAlign: 'center' }}>
-        Before we start, we need to connect to you Metamask account{' '}
-      </Heading>
-
       <Button
         sx={{ maxWidth: 200, mt: 5, px: 6, py: 4 }}
         variant="primary"

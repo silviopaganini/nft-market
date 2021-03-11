@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Heading, Container } from 'theme-ui'
 import { Gallery, MetamaskLogin } from '../components'
 import { ActionType, useStateContext } from '../state'
@@ -9,13 +9,12 @@ const { REACT_APP_APIETHERSCAN } = process.env
 const App = () => {
   const { state, dispatch } = useStateContext()
   const { web3, user } = state
-  const [error, setError] = useState<boolean>(false)
+  const [error, setError] = useState<string>()
 
-  const onClickConnect = async () => {
+  const onClickConnect = useCallback(async () => {
     if (!state || !web3) return
     try {
-      await window.ethereum.enable()
-      const [userAccount] = await web3.eth.getAccounts()
+      let [userAccount] = await web3.eth.requestAccounts()
 
       const {
         result: { ethusd },
@@ -24,36 +23,66 @@ const App = () => {
           `https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${REACT_APP_APIETHERSCAN}`
         )
       ).json()
+
       dispatch({ type: ActionType.ETH_PRICE, payload: ethusd })
 
       const contract = await getContract({ state, dispatch })
+      console.log('sign user')
+
       await signUser(userAccount)
 
       await updateUser({ contract, userAccount, state, dispatch })
     } catch (e) {
-      setError(true)
+      setError(e.message)
       console.log(e)
     }
-  }
+  }, [dispatch, state, web3])
 
   useEffect(() => {
-    const onAccountsChanged = (event: any) => {
-      window.location.reload()
+    const onChangeAccounts = (event: any) => {
+      console.log(event)
+
+      dispatch({
+        type: ActionType.SIGN_OUT,
+      })
+
+      if (event.length < 1) {
+        setError('You locked your Metamask, please unlock it and login again')
+        return
+      }
+
+      setError(undefined)
     }
 
-    if (state.user?.address) {
-      window.ethereum.on('accountsChanged', onAccountsChanged)
+    const onChangeChain = () => {
+      setError(undefined)
+      onClickConnect()
     }
-  }, [state.user?.address])
+
+    window.ethereum.on('accountsChanged', onChangeAccounts)
+    window.ethereum.on('chainChanged', onChangeChain)
+
+    return () => {
+      window.ethereum.removeAllListeners()
+    }
+  }, [onClickConnect, dispatch])
 
   return (
     <Container>
       {error ? (
-        <Heading as="h3">Please connect to Metamask.</Heading>
+        <>
+          <Heading as="h3">{error}</Heading>
+          <MetamaskLogin onClickConnect={onClickConnect} />
+        </>
       ) : (
         <>
           {!user || !user.address ? (
-            <MetamaskLogin onClickConnect={onClickConnect} />
+            <>
+              <Heading as="h3" sx={{ textAlign: 'center' }}>
+                Before we start, we need to connect to you Metamask account{' '}
+              </Heading>
+              <MetamaskLogin onClickConnect={onClickConnect} />
+            </>
           ) : (
             <>
               <Gallery />
