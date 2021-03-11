@@ -14,6 +14,7 @@ const App = () => {
   const onClickConnect = async () => {
     if (!state || !web3) return
     try {
+      await window.ethereum.enable()
       const [userAccount] = await web3.eth.getAccounts()
 
       const {
