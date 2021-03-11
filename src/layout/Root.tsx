@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import { App, Error, Profile } from './'
@@ -16,14 +16,9 @@ const Root = () => {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    const onAccountsChanged = () => {
-      window.location.reload()
-    }
-
     const startWeb3 = async () => {
       try {
         const web3 = await getWeb3()
-        window.ethereum.on('accountsChanged', onAccountsChanged)
         dispatch({ type: ActionType.WEB3_INIT, payload: web3 })
       } catch (e) {
         setError(true)

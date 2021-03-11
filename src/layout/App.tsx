@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Heading, Container } from 'theme-ui'
 import { Gallery, MetamaskLogin } from '../components'
 import { ActionType, useStateContext } from '../state'
@@ -35,6 +35,16 @@ const App = () => {
       console.log(e)
     }
   }
+
+  useEffect(() => {
+    const onAccountsChanged = (event: any) => {
+      window.location.reload()
+    }
+
+    if (state.user?.address) {
+      window.ethereum.on('accountsChanged', onAccountsChanged)
+    }
+  }, [state.user?.address])
 
   return (
     <Container>
