@@ -1,3 +1,4 @@
+import { Contract } from 'ethers'
 import { TokenProps } from './components/Token'
 
 declare global {
@@ -13,11 +14,10 @@ export type ContractPropsDetails = {
   symbol?: string
   totalSupply?: number
   address?: string
-  networkId?: string | number
 }
 
 export type ContractProps = {
-  payload: any
+  payload: Contract
   details: ContractPropsDetails
 }
 

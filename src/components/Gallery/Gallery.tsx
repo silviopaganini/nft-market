@@ -1,3 +1,5 @@
+import { useWeb3React } from '@web3-react/core'
+import { BigNumber } from 'ethers'
 import { useCallback, useEffect } from 'react'
 import { Box, Grid, Heading } from 'theme-ui'
 import { updateUser } from '../../actions'
@@ -8,41 +10,35 @@ export type GalleryProps = {}
 
 const Gallery = () => {
   const { state, dispatch } = useStateContext()
-  const { web3, contract, user, tokensOnSale } = state
+  const { library } = useWeb3React()
+  const { contract, user, tokensOnSale } = state
 
   const onConfirmTransfer = async () => {
-    if (!user || !user.address || !web3) return
-    await updateUser({ contract: contract?.payload, userAccount: user.address, state, dispatch })
+    if (!user || !user.address) return
+    await updateUser({ contract: contract?.payload, userAccount: user.address, library, dispatch })
   }
 
-  const onBuyToken = async ({ id, price }: { id: string; price: string }) => {
+  const onBuyToken = async ({ id, price }: { id: string; price: BigNumber }) => {
     if (!contract?.payload) return
 
     try {
-      contract.payload.methods
-        .purchaseToken(id)
-        .send({ from: user?.address, value: price })
-        .on('transactionHash', function (hash: any) {
-          console.log(hash)
-        })
-        .on('receipt', onConfirmTransfer)
-        .on('confirmation', onConfirmTransfer)
-        .on('error', console.error)
-
-      // .on('transactionHash', function (hash: any) {
-      //   console.log(hash)
-      // })
-      // .on('receipt', onConfirmTransfer)
-      // .on('confirmation', onConfirmTransfer)
-      // .on('error', console.error)
-    } catch (e) {}
+      const tx = await contract.payload.purchaseToken(id, { value: price })
+      const receipt = await tx.wait()
+      if (receipt.confirmations >= 1) {
+        onConfirmTransfer()
+      } else {
+        throw new Error(receipt)
+      }
+    } catch (e) {
+      throw new Error(e)
+    }
   }
 
   const loadTokensForSale = useCallback(async () => {
     try {
-      const tokensForSale = (await contract?.payload.methods.getAllOnSale().call()).reduce(
+      const tokensForSale = (await contract?.payload.getAllOnSale()).reduce(
         (acc: TokenProps[], b: any) => {
-          if (b.id !== '0') {
+          if (b.uri !== '') {
             acc.push({ id: b.id, price: b.price, name: b.name, uri: b.uri })
           }
 
@@ -57,13 +53,14 @@ const Gallery = () => {
     }
   }, [dispatch, contract])
 
-  const onBuyTokenClick = ({ id, price }: { id: string; price: string }) => {
+  const onBuyTokenClick = ({ id, price }: { id: string; price: BigNumber }) => {
     onBuyToken && onBuyToken({ id, price })
   }
 
   useEffect(() => {
     loadTokensForSale()
   }, [loadTokensForSale, user?.ownedTokens])
+
   return (
     <Box>
       <Heading as="h1">Market</Heading>

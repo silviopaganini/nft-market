@@ -1,5 +1,4 @@
 import { createContext, FC, Reducer, useContext, useReducer } from 'react'
-import Web3 from 'web3'
 import { TokenProps } from '../components/Token'
 import { ContractProps, UserProps } from '../types'
 
@@ -7,7 +6,6 @@ import { reducer, Action } from './reducer'
 
 export interface StateContext {
   isAuthenticated: boolean
-  web3?: Web3
   contract?: ContractProps
   user?: UserProps
   tokensOnSale?: TokenProps[]

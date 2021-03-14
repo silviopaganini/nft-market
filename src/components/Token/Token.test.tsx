@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react'
+import { BigNumber } from 'ethers'
 import Token from './Token'
 
 test(`Renders ${name}`, () => {
@@ -8,9 +9,11 @@ test(`Renders ${name}`, () => {
         id: '1',
         name: 'Token 1',
         uri: 'token1',
-        price: '1000000000000000000',
+        price: BigNumber.from(1),
       }}
-      onTransfer={() => {}}
+      onTransfer={async () => {
+        return true
+      }}
     />
   )
 })

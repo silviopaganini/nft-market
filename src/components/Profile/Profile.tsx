@@ -1,100 +1,129 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useWeb3React } from '@web3-react/core'
+// import { useCallback, useEffect, useState } from 'react'
+import { utils, BigNumber } from 'ethers'
 import { Text, Box, Heading, Grid, Divider } from 'theme-ui'
-import { Token, ActivityLine } from '..'
+import {
+  Token,
+  // ActivityLine
+} from '..'
 import { updateUser } from '../../actions'
 import { useStateContext } from '../../state'
-import { toWei } from '../../utils'
-import { ActivityHistory } from '../ActivityLine/ActivityLine'
+// import { ActivityHistory } from '../ActivityLine/ActivityLine'
 
 export type ProfileProps = {}
 
 const Profile = () => {
   const { state, dispatch } = useStateContext()
-  const { web3, contract, user, tokensOnSale } = state
-  const [history, setHistory] = useState<ActivityHistory[]>([])
+  const { contract, user, tokensOnSale } = state
+  const { library } = useWeb3React()
+  // const [history, setHistory] = useState<ActivityHistory[]>([])
 
-  const getHistory = useCallback(
-    async (address: string, event: string) => {
-      if (!contract?.payload || !web3) return []
+  // TODO: build history again
 
-      try {
-        const events = await await contract?.payload.getPastEvents(event, {
-          fromBlock: 0,
-          toBlock: 'latest',
-          filter: {
-            owner: address,
-          },
-        })
+  // const getHistory = useCallback(
+  //   async (address: string, event: string) => {
+  //     if (!contract?.payload || !library) return []
 
-        return await Promise.all<ActivityHistory>(
-          events.map(async (item: any) => {
-            const timestamp = (await web3.eth.getBlock(item.blockNumber)).timestamp
-            const historyItem = {
-              from: item.returnValues.from,
-              to: item.returnValues.to,
-              name: (await contract.payload.methods.tokenMeta(item.returnValues.tokenid).call())
-                .name,
-              time: new Date(Number(timestamp) * 1000),
-            }
-            return historyItem
-          })
-        )
-      } catch (e) {
-        console.log(e)
-        return []
-      }
-    },
-    [contract?.payload, web3]
-  )
+  //     try {
+  //       const events = await await contract?.payload.getPastEvents(event, {
+  //         fromBlock: 0,
+  //         toBlock: 'latest',
+  //         filter: {
+  //           owner: address,
+  //         },
+  //       })
 
-  const getActivity = useCallback(
-    async (address: string) => {
-      if (!contract?.payload || !web3) return
-      try {
-        const boughtFrom = await getHistory(address, 'Bought')
-        const soldTo = await getHistory(address, 'Sold')
+  //       return await Promise.all<ActivityHistory>(
+  //         events.map(async (item: any) => {
+  //           const timestamp = (await library.eth.getBlock(item.blockNumber)).timestamp
+  //           const historyItem = {
+  //             from: item.returnValues.from,
+  //             to: item.returnValues.to,
+  //             name: (await contract.payload.methods.tokenMeta(item.returnValues.tokenid).call())
+  //               .name,
+  //             time: new Date(Number(timestamp) * 1000),
+  //           }
+  //           return historyItem
+  //         })
+  //       )
+  //     } catch (e) {
+  //       console.log(e)
+  //       return []
+  //     }
+  //   },
+  //   [contract?.payload, library]
+  // )
 
-        const sortedHistory = [...boughtFrom, ...soldTo].sort(
-          (a, b) => b.time.getTime() - a.time.getTime()
-        )
+  // const getActivity = useCallback(
+  //   async (address: string) => {
+  //     if (!contract?.payload || !library) return
+  //     try {
+  //       const boughtFrom = await getHistory(address, 'Bought')
+  //       const soldTo = await getHistory(address, 'Sold')
 
-        setHistory(sortedHistory)
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    [contract?.payload, web3, getHistory]
-  )
+  //       const sortedHistory = [...boughtFrom, ...soldTo].sort(
+  //         (a, b) => b.time.getTime() - a.time.getTime()
+  //       )
 
-  useEffect(() => {
-    if (!user || !contract) return
-    getActivity(user.address)
-  }, [contract, user, getActivity])
+  //       setHistory(sortedHistory)
+  //     } catch (e) {
+  //       console.log(e)
+  //     }
+  //   },
+  //   [contract?.payload, library, getHistory]
+  // )
+
+  // useEffect(() => {
+  //   if (!user || !contract) return
+  //   getActivity(user.address)
+  // }, [contract, user, getActivity])
 
   if (!user) return null
 
   const { address, balance, ownedTokens } = user
 
-  const onConfirmTransfer = async () => {
-    if (!user || !user.address || !web3) return
-    await updateUser({ contract: contract?.payload, userAccount: user.address, state, dispatch })
+  const onConfirmTransfer = async (): Promise<boolean> => {
+    if (!user || !user.address || !library) return false
+    try {
+      await updateUser({
+        contract: contract?.payload,
+        userAccount: user.address,
+        library,
+        dispatch,
+      })
+      return true
+    } catch (e) {
+      return false
+    }
   }
 
-  const onTransferToken = ({ id, address }: { id: string; address: string }) => {
-    if (!contract?.payload) return
+  const onTransferToken = async ({
+    id,
+    address,
+  }: {
+    id: string
+    address: string
+  }): Promise<boolean> => {
+    if (!contract?.payload) return false
 
     try {
-      contract?.payload.methods
-        .safeTransferFrom(user?.address, address, id)
-        .send({ from: user?.address })
-        .on('transactionHash', function (hash: any) {
-          console.log(hash)
-        })
-        .on('receipt', onConfirmTransfer)
-        .on('confirmation', onConfirmTransfer)
-        .on('error', console.error)
+      const tx = await contract.payload['safeTransferFrom(address,address,uint256)'](
+        user.address,
+        address,
+        id,
+        {
+          from: user.address,
+        }
+      )
+      const receipt = await tx.wait()
+      if (receipt.confirmations >= 1) {
+        return onConfirmTransfer()
+      } else {
+        return false
+      }
     } catch (e) {
       console.log(e)
+      return false
     }
   }
 
@@ -104,18 +133,16 @@ const Profile = () => {
     onSale = true,
   }: {
     id: string
-    price: string
+    price: BigNumber
     onSale?: boolean
-  }) => {
-    if (!contract?.payload || !user?.address) return
+  }): Promise<boolean> => {
+    if (!contract?.payload || !user?.address) return false
     try {
-      await contract.payload.methods
-        .setTokenSale(id, onSale, toWei(price))
-        .send({ from: user.address })
-
-      onConfirmTransfer()
+      await contract.payload.setTokenSale(id, onSale, price)
+      return await onConfirmTransfer()
     } catch (e) {
       console.log(e)
+      return false
     }
   }
 
@@ -145,7 +172,9 @@ const Profile = () => {
             <Grid gap={4} columns="1fr 1fr 1fr">
               {ownedTokens.map((t, index) => (
                 <Token
-                  isOnSale={!!tokensOnSale?.find(a => a.id === t.id)}
+                  isOnSale={
+                    !!tokensOnSale?.find(a => utils.formatUnits(a.id) === utils.formatUnits(t.id))
+                  }
                   onSale={onSaleToken}
                   onTransfer={onTransferToken}
                   token={t}
@@ -162,11 +191,11 @@ const Profile = () => {
           )
         )}
       </Box>
-      <Divider variant="divider.nft" sx={{ my: 7 }} />
+      {/* <Divider variant="divider.nft" sx={{ my: 7 }} />
       <Heading as="h2">Activity</Heading>
       {history.map((activity, index) => (
         <ActivityLine key={index} activity={activity} />
-      ))}
+      ))} */}
     </Box>
   )
 }

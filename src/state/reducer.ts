@@ -1,4 +1,3 @@
-import Web3 from 'web3'
 import { TokenProps } from '../components/Token'
 import { ContractProps, UserProps } from '../types'
 import { StateContext } from './state'
@@ -6,14 +5,12 @@ import { StateContext } from './state'
 export enum ActionType {
   UPDATE_USER = 'Update User',
   SIGN_OUT = 'Sign out',
-  WEB3_INIT = 'Web3 Init',
   CONTRACT = 'Contract',
   LOAD_TOKEN_SALE = 'Load tokens on Sale',
   ETH_PRICE = 'Eth price',
 }
 
 export type Action =
-  | { type: ActionType.WEB3_INIT; payload: Web3 }
   | { type: ActionType.ETH_PRICE; payload: string }
   | { type: ActionType.CONTRACT; payload: ContractProps }
   | { type: ActionType.UPDATE_USER; payload: UserProps }
@@ -27,10 +24,9 @@ export const reducer = (state: StateContext, action: Action) => {
     case ActionType.UPDATE_USER:
       return { ...state, isAuthenticated: true, user: action.payload }
     case ActionType.SIGN_OUT:
-      return { ...state, isAuthenticated: false, user: undefined }
+      console.log('asdasdasd')
 
-    case ActionType.WEB3_INIT:
-      return { ...state, web3: action.payload }
+      return { ...state, isAuthenticated: false, user: undefined }
 
     case ActionType.LOAD_TOKEN_SALE:
       return { ...state, tokensOnSale: action.payload }

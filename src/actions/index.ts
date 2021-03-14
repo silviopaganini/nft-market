@@ -1,11 +1,10 @@
 import { Dispatch } from 'react'
-import { Action, StateContext } from '../state'
+import { Action } from '../state'
 
 export { default as updateUser } from './updateUser'
 export { default as getContract } from './getContract'
-export { default as signUser } from './signUser'
 
 export type ActionProps<Props> = Props & {
-  state: StateContext
+  library: any
   dispatch: Dispatch<Action>
 }

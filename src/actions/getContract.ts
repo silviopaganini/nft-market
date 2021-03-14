@@ -1,41 +1,43 @@
 import { ActionProps } from '.'
 import LVR from '../contracts/LVR.json'
+import { Contract } from 'ethers'
 import { ActionType } from '../state'
 
-type Props = ActionProps<{}>
+type Props = ActionProps<{
+  chainId: number
+}>
 
-const getContract = async ({ state, dispatch }: Props) => {
-  const { web3 } = state
-  if (!web3) throw new Error('No Web3 Found')
+const getContract = async ({ dispatch, library, chainId }: Props) => {
+  if (!library) throw new Error('No Web3 Found')
+
+  const networkid = (id: number) => {
+    switch (id) {
+      case 1337:
+        return 5777
+      default:
+        return id
+    }
+  }
 
   try {
-    const networkId = (await web3.eth.net.getId()).toString()
-
-    //@ts-ignore
-    const deployedNetwork = LVR.networks[networkId]
+    const deployedNetwork = LVR.networks[String(networkid(chainId)) as keyof typeof LVR.networks]
 
     if (!deployedNetwork) {
       throw new Error('The network you selected is no supported yet.')
     }
 
-    const contract = new web3.eth.Contract(
-      //@ts-ignore
-      LVR.abi,
-      deployedNetwork && deployedNetwork.address
-    )
+    const { address } = deployedNetwork
+    const contract = new Contract(address, LVR.abi, library.getSigner())
 
-    const address = deployedNetwork.address
-
-    const name = await contract.methods.name().call()
-    const symbol = await contract.methods.symbol().call()
-    const totalSupply = await contract.methods.totalSupply().call()
+    const name = await contract.name()
+    const symbol = await contract.symbol()
+    const totalSupply = await contract.totalSupply()
 
     dispatch({
       type: ActionType.CONTRACT,
       payload: {
         payload: contract,
         details: {
-          networkId,
           address,
           name,
           symbol,

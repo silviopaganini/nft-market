@@ -2,7 +2,7 @@ require('dotenv').config()
 const { Promise } = require('@ungap/global-this')
 const colors = require('colors')
 const fetch = require('node-fetch')
-const Web3 = require('web3')
+const { utils, BigNumber } = require('ethers')
 const BCGNFT = artifacts.require('LVR.sol')
 
 const ADDRESS = '0x4545f57c253B8e610C7CC891df62C3EF497ce5Bf'
@@ -27,7 +27,7 @@ const start = async callback => {
     const contract = await BCGNFT.deployed()
     const price = '0.5'
 
-    const priceWei = Web3.utils.toWei(price, 'ether')
+    const priceWei = utils.formatEther(BigNumber.from(price))
 
     const mintedTokens = await Promise.all(
       mintAssetsOnIPFS.map(async token => {

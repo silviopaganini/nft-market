@@ -1,21 +1,29 @@
 import { FormEvent, MouseEvent, useState } from 'react'
+import { utils, BigNumber, constants } from 'ethers'
 import { Box, Flex, Card, Button, Image, Input, Text, Heading, Divider } from 'theme-ui'
-import Web3 from 'web3'
 import { useStateContext } from '../../state'
 
 export type TokenProps = {
   id: string
   uri: string
-  price: string
+  price: BigNumber
   name: string
 }
 
 export type TokenCompProps = {
   token: TokenProps
   isOnSale?: boolean
-  onTransfer?({ id, address }: { id: string; address: string }): void
-  onBuy?({ id, price }: { id: string; price: string }): void
-  onSale?({ id, price, onSale }: { id: string; price: string; onSale?: boolean }): void
+  onTransfer?({ id, address }: { id: string; address: string }): Promise<boolean>
+  onBuy?({ id, price }: { id: string; price: BigNumber }): void
+  onSale?({
+    id,
+    price,
+    onSale,
+  }: {
+    id: string
+    price: BigNumber
+    onSale?: boolean
+  }): Promise<boolean>
 }
 
 const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) => {
@@ -27,10 +35,17 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
     state: { user, ethPrice },
   } = useStateContext()
 
-  const onTransferClick = (e: FormEvent | MouseEvent) => {
+  const onTransferClick = async (e: FormEvent | MouseEvent) => {
     e.preventDefault()
-    if (Web3.utils.isAddress(address) && onTransfer) {
-      onTransfer({ id: token.id, address })
+    try {
+      if (utils.isAddress(address) && onTransfer) {
+        const result = await onTransfer({ id: token.id, address })
+        if (result) {
+          setOnSale(false)
+        }
+      }
+    } catch (e) {
+      throw new Error(e)
     }
   }
 
@@ -39,15 +54,23 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
     onBuy && onBuy({ id: token.id, price: token.price })
   }
 
-  const onSaleClick = (e: MouseEvent) => {
+  const onSaleClick = async (e: MouseEvent) => {
     e.preventDefault()
-    onSale && onSale({ id: token.id, price, onSale: true })
+    if (!onSale) return
+    try {
+      const result = await onSale({ id: token.id, price: utils.parseEther(price), onSale: true })
+      if (result) {
+        setOnSale(false)
+      }
+    } catch (e) {
+      throw new Error(e)
+    }
   }
 
   const tokenPriceEth = new Intl.NumberFormat('us-GB', {
     style: 'currency',
     currency: 'USD',
-  }).format(Number(Web3.utils.fromWei(token.price)) * Number(ethPrice))
+  }).format(Number(utils.formatEther(token.price)) * Number(ethPrice))
 
   return (
     <Card variant="nft">
@@ -61,7 +84,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
         <Box>
           <Text sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>Price</Text>
           <Heading as="h3" sx={{ color: 'green', m: 0, fontWeight: 'bold' }}>
-            Ξ {Number(Web3.utils.fromWei(token.price)).toFixed(2)}{' '}
+            {constants.EtherSymbol} {Number(utils.formatEther(token.price)).toFixed(2)}{' '}
             <Text sx={{ color: 'navy' }} as="span" variant="text.body">
               ({tokenPriceEth})
             </Text>
@@ -136,7 +159,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
                       onSale &&
                       onSale({
                         id: token.id,
-                        price: Web3.utils.fromWei(token.price),
+                        price: token.price,
                         onSale: false,
                       })
                     }
@@ -157,8 +180,14 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
           <Flex mt={3} sx={{ justifyContent: 'center', width: '100%' }}>
             <Button
               sx={{
-                opacity: !!user?.ownedTokens.find(a => a.id === token.id) ? 0.5 : 1,
-                pointerEvents: !!user?.ownedTokens.find(a => a.id === token.id)
+                opacity: !!user?.ownedTokens.find(
+                  a => utils.formatUnits(a.id) === utils.formatUnits(token.id)
+                )
+                  ? 0.5
+                  : 1,
+                pointerEvents: !!user?.ownedTokens.find(
+                  a => utils.formatUnits(a.id) === utils.formatUnits(token.id)
+                )
                   ? 'none'
                   : 'visible',
               }}
