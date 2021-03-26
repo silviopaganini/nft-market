@@ -13,24 +13,34 @@ contract LVR is ERC721, Ownable {
     event Bought(address indexed owner,address indexed from, uint256 tokenid);
     event Sold(address indexed owner, address indexed to, uint256 tokenid);
 
+    string baseURI = "http://localhost:8080/api/item/{id}";
+
     mapping (uint256 => TokenMeta) private _tokenMeta;
-    mapping (uint256 => bool) private _tokenOnSale;
 
     struct TokenMeta {
         uint256 id;
         uint256 price;
         string name;
         string uri;
+        bool sale;
     }
 
     constructor() ERC721("LVR", "LVR") {}
+
+    function _baseURI() internal view virtual override returns (string memory) {
+        return baseURI;
+    }
+
+    function setBaseURI(string memory _newBaseURI) public virtual onlyOwner {
+        baseURI = _newBaseURI;
+    }
 
     function getAllOnSale () public view virtual returns( TokenMeta[] memory ) {
         TokenMeta[] memory tokensOnSale = new TokenMeta[](_tokenIds.current());
         uint256 counter = 0;
 
         for(uint i = 1; i < _tokenIds.current() + 1; i++) {
-            if(_tokenOnSale[i] == true) {
+            if(_tokenMeta[i].sale == true) {
                 tokensOnSale[counter] = _tokenMeta[i];
                 counter++;
             }
@@ -51,7 +61,7 @@ contract LVR is ERC721, Ownable {
         require(_exists(_tokenId), "ERC721Metadata: Sale set of nonexistent token");
         require(_price > 0);
 
-        _tokenOnSale[_tokenId] = _sale;
+        _tokenMeta[_tokenId].sale = _sale;
         setTokenPrice(_tokenId, _price);
     }
 
@@ -85,7 +95,7 @@ contract LVR is ERC721, Ownable {
 
     /**
      * @dev purchase _tokenId
-     * @param _tokenId uint256 token ID (painting number)
+     * @param _tokenId uint256 token ID (token number)
      */
     function purchaseToken(uint256 _tokenId) public payable {
         require(msg.sender != address(0) && msg.sender != ownerOf(_tokenId));
@@ -96,7 +106,7 @@ contract LVR is ERC721, Ownable {
 
         setApprovalForAll(tokenSeller, true);
         _transfer(tokenSeller, msg.sender, _tokenId);
-        _tokenOnSale[_tokenId] = false;
+        _tokenMeta[_tokenId].sale = false;
 
         emit Bought(msg.sender, tokenSeller, _tokenId);
         emit Sold(tokenSeller, msg.sender, _tokenId);
@@ -118,11 +128,9 @@ contract LVR is ERC721, Ownable {
 
         uint256 newItemId = _tokenIds.current();
         _mint(_owner, newItemId);
-        _setTokenURI(newItemId, _tokenURI);
 
-        TokenMeta memory meta = TokenMeta(newItemId, _price, _name, _tokenURI);
+        TokenMeta memory meta = TokenMeta(newItemId, _price, _name, _tokenURI, _sale);
         _setTokenMeta(newItemId, meta);
-        _tokenOnSale[newItemId] = _sale;
 
         return newItemId;
     }

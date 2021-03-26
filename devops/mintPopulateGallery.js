@@ -27,7 +27,7 @@ const start = async callback => {
     const contract = await BCGNFT.deployed()
     const price = '0.5'
 
-    const priceWei = utils.formatEther(BigNumber.from(price))
+    const priceWei = utils.formatEther(price)
 
     const mintedTokens = await Promise.all(
       mintAssetsOnIPFS.map(async token => {

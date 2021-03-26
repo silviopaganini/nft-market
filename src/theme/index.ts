@@ -1,4 +1,4 @@
-import { SxStyleProp, Theme } from 'theme-ui'
+import { SxProp, Theme } from 'theme-ui'
 
 const defaultButton = {
   border: 0,
@@ -15,7 +15,7 @@ const defaultButton = {
   '&:hover': {
     opacity: 0.7,
   },
-} as SxStyleProp
+} as SxProp
 
 export const Palette = {
   text: '#FFF',
