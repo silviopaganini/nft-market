@@ -12,7 +12,6 @@ declare const ethereum: any
 export type ContractPropsDetails = {
   name?: string
   symbol?: string
-  totalSupply?: number
   address?: string
 }
 

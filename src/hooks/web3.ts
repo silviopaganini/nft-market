@@ -35,7 +35,7 @@ export function useInactiveListener(suppress: boolean = false) {
   const { active, error, activate, deactivate } = useWeb3React()
   const { dispatch } = useStateContext()
 
-  useEffect((): any => {
+  useEffect(() => {
     const { ethereum } = window as any
 
     if (ethereum && ethereum.on && active && !error && !suppress) {

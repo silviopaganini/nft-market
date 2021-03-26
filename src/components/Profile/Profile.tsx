@@ -1,14 +1,9 @@
 import { useWeb3React } from '@web3-react/core'
-// import { useCallback, useEffect, useState } from 'react'
 import { utils, BigNumber } from 'ethers'
 import { Text, Box, Heading, Grid, Divider } from 'theme-ui'
-import {
-  Token,
-  // ActivityLine
-} from '..'
+import { Token } from '..'
 import { updateUser } from '../../actions'
 import { useStateContext } from '../../state'
-// import { ActivityHistory } from '../ActivityLine/ActivityLine'
 
 export type ProfileProps = {}
 
@@ -16,67 +11,6 @@ const Profile = () => {
   const { state, dispatch } = useStateContext()
   const { contract, user, tokensOnSale } = state
   const { library } = useWeb3React()
-  // const [history, setHistory] = useState<ActivityHistory[]>([])
-
-  // TODO: build history again
-
-  // const getHistory = useCallback(
-  //   async (address: string, event: string) => {
-  //     if (!contract?.payload || !library) return []
-
-  //     try {
-  //       const events = await await contract?.payload.getPastEvents(event, {
-  //         fromBlock: 0,
-  //         toBlock: 'latest',
-  //         filter: {
-  //           owner: address,
-  //         },
-  //       })
-
-  //       return await Promise.all<ActivityHistory>(
-  //         events.map(async (item: any) => {
-  //           const timestamp = (await library.eth.getBlock(item.blockNumber)).timestamp
-  //           const historyItem = {
-  //             from: item.returnValues.from,
-  //             to: item.returnValues.to,
-  //             name: (await contract.payload.methods.tokenMeta(item.returnValues.tokenid).call())
-  //               .name,
-  //             time: new Date(Number(timestamp) * 1000),
-  //           }
-  //           return historyItem
-  //         })
-  //       )
-  //     } catch (e) {
-  //       console.log(e)
-  //       return []
-  //     }
-  //   },
-  //   [contract?.payload, library]
-  // )
-
-  // const getActivity = useCallback(
-  //   async (address: string) => {
-  //     if (!contract?.payload || !library) return
-  //     try {
-  //       const boughtFrom = await getHistory(address, 'Bought')
-  //       const soldTo = await getHistory(address, 'Sold')
-
-  //       const sortedHistory = [...boughtFrom, ...soldTo].sort(
-  //         (a, b) => b.time.getTime() - a.time.getTime()
-  //       )
-
-  //       setHistory(sortedHistory)
-  //     } catch (e) {
-  //       console.log(e)
-  //     }
-  //   },
-  //   [contract?.payload, library, getHistory]
-  // )
-
-  // useEffect(() => {
-  //   if (!user || !contract) return
-  //   getActivity(user.address)
-  // }, [contract, user, getActivity])
 
   if (!user) return null
 
@@ -191,11 +125,6 @@ const Profile = () => {
           )
         )}
       </Box>
-      {/* <Divider variant="divider.nft" sx={{ my: 7 }} />
-      <Heading as="h2">Activity</Heading>
-      {history.map((activity, index) => (
-        <ActivityLine key={index} activity={activity} />
-      ))} */}
     </Box>
   )
 }

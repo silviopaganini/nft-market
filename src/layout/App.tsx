@@ -7,20 +7,19 @@ import {
   // Heading,
   Container,
   Grid,
+  Button,
   Spinner,
 } from 'theme-ui'
 import useSWR from 'swr'
 
-import {
-  Gallery,
-  // MetamaskLogin
-} from '../components'
+import { Gallery, MetamaskLogin } from '../components'
 import { ActionType, useStateContext } from '../state'
 import { getContract, updateUser } from '../actions'
 import {
   // UnsupportedChainIdError,
   useWeb3React,
 } from '@web3-react/core'
+
 // import {
 //   NoEthereumProviderError,
 //   UserRejectedRequestError as UserRejectedRequestErrorInjected,
@@ -28,7 +27,7 @@ import {
 // import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } from '@web3-react/walletconnect-connector'
 // import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from '@web3-react/frame-connector'
 
-import { useEagerConnect, useInactiveListener } from '../hooks'
+import { useEagerConnect, useInactiveListener } from '../hooks/web3'
 
 import {
   injected,
@@ -154,8 +153,10 @@ const App = () => {
               const disabled = !triedEager || !!activatingConnector || connected || !!error
 
               return (
-                <button
-                  style={{
+                <Button
+                  mt={2}
+                  variant="tertiary"
+                  sx={{
                     height: '3rem',
                     borderRadius: '1rem',
                     borderColor: activating ? 'orange' : connected ? 'green' : 'unset',
@@ -190,21 +191,12 @@ const App = () => {
                     )}
                   </div>
                   {name}
-                </button>
+                </Button>
               )
             })}
           </Grid>
-          {!!(library && account) && (
-            <button
-              style={{
-                height: '3rem',
-                borderRadius: '1rem',
-                cursor: 'pointer',
-              }}
-              onClick={signInUser}
-            >
-              Sign Message
-            </button>
+          {!!(library && account) && connector === connectorsByName.Injected && (
+            <MetamaskLogin onClickConnect={signInUser} />
           )}
         </>
       ) : (

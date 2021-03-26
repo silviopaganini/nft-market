@@ -10,9 +10,6 @@ contract LVR is ERC721, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    event Bought(address indexed owner,address indexed from, uint256 tokenid);
-    event Sold(address indexed owner, address indexed to, uint256 tokenid);
-
     string baseURI = "http://localhost:8080/api/item/{id}";
 
     mapping (uint256 => TokenMeta) private _tokenMeta;
@@ -107,9 +104,6 @@ contract LVR is ERC721, Ownable {
         setApprovalForAll(tokenSeller, true);
         _transfer(tokenSeller, msg.sender, _tokenId);
         _tokenMeta[_tokenId].sale = false;
-
-        emit Bought(msg.sender, tokenSeller, _tokenId);
-        emit Sold(tokenSeller, msg.sender, _tokenId);
     }
 
     function mintCollectable(

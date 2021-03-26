@@ -31,7 +31,6 @@ const getContract = async ({ dispatch, library, chainId }: Props) => {
 
     const name = await contract.name()
     const symbol = await contract.symbol()
-    const totalSupply = await contract.totalSupply()
 
     dispatch({
       type: ActionType.CONTRACT,
@@ -41,7 +40,6 @@ const getContract = async ({ dispatch, library, chainId }: Props) => {
           address,
           name,
           symbol,
-          totalSupply,
         },
       },
     })
