@@ -13,28 +13,27 @@ The following functionalities were tested:
 7. Metadata and marketplace on Opensea.io
 8. Metadata and IPFS Lambda functions on AWS
 
-<br>
-<video width="100%" controls autoplay muted playsinline loop>
-  <source src="https://media.graphcms.com/At0mtMruQ7WQEKkpY1fY" type="video/mp4">
-</video>
-<br><br>
 <hr />
 
-See the [source](https://github.com/silviopaganini/nft-market)
-
-See the [source for the IPFS service](https://github.com/silviopaganini/nft-market-service)
+See the [source for the IPFS and Metadata Lambda service](https://github.com/silviopaganini/nft-market-service)
 
 See it live on [Rinkeby Network](https://nft.s2paganini.com) 
-<br><br>
+
+See [my portfolio](https://s2paganini.com/case/ckm0zl44o0w1i0a54lryryi1d) for more details 
+
 <hr />
-<br><br>
-Demo of Integration with Opensea.io marketplace (not edited, you will see the steps of wrapping ETH to make offers) 
 
+## Tech-Stack
 
-<video width="100%" controls autoplay muted playsinline loop>
-  <source src="https://media.graphcms.com/hMprwPRYipgezXmp0KnQ" type="video/mp4">
-</video>
-<br><br>
-| Tech-Stack |
-| - |
-|• Typescript<br>• Solidity<br>• React<br>• Truffle / Ganache<br>• Storybook<br>• openZeppelin<br>• Metamask (web3)<br>• Opensea.io<br>• Web3-react<br>• IPFS<br>• Lambda AWS |
+- Typescript
+- Solidity
+- React
+- Truffle / Ganache
+- Storybook
+- openZeppelin
+- Metamask (web3)
+- Opensea.io
+- Web3-react
+- IPFS
+- Lambda AWS
+- serverless
