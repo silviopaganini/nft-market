@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { ThemeProvider } from 'theme-ui'
-import { Root, Error } from './layout'
+import { Root } from './layout'
 import reportWebVitals from './reportWebVitals'
 import { StateProvider } from './state/state'
 import theme from './theme'
@@ -9,13 +9,9 @@ import theme from './theme'
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      {typeof window.ethereum !== 'undefined' ? (
-        <StateProvider>
-          <Root />
-        </StateProvider>
-      ) : (
-        <Error />
-      )}
+      <StateProvider>
+        <Root />
+      </StateProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
