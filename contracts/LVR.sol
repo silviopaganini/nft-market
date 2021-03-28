@@ -10,7 +10,7 @@ contract LVR is ERC721, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    string baseURI = "http://localhost:8080/api/item/{id}";
+    string baseURI = "https://rh25q24tvf.execute-api.eu-west-2.amazonaws.com/dev/token?id=";
 
     mapping (uint256 => TokenMeta) private _tokenMeta;
 

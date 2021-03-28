@@ -16,7 +16,8 @@ const listTokensFrom = (contract: Contract, address: string) =>
           const ownerToken = await contract.ownerOf(current.args?.tokenId)
 
           if (ownerToken === address) {
-            const { id, name, price, uri } = await contract.tokenMeta(current.args?.tokenId)
+            const { id, name, price } = await contract.tokenMeta(current.args?.tokenId)
+            const uri = await contract.tokenURI(current.args?.tokenId)
 
             accumulator.push({
               id,

@@ -90,6 +90,7 @@ export default {
     },
 
     secondary: {
+      cursor: 'pointer',
       variant: 'buttons.primary',
       bg: 'secondary',
       fontWeight: 'body',

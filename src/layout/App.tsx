@@ -31,52 +31,52 @@ import { useEagerConnect, useInactiveListener } from '../hooks/web3'
 
 import {
   injected,
-  network,
+  // network,
   walletconnect,
-  walletlink,
-  ledger,
-  trezor,
-  lattice,
-  frame,
-  authereum,
+  // walletlink,
+  // ledger,
+  // trezor,
+  // lattice,
+  // frame,
+  // authereum,
   // fortmatic,
   // magic,
   // portis,
-  torus,
+  // torus,
 } from '../connectors'
 import { ETHSCAN_API } from '../utils'
 import { fetcherETHUSD } from '../utils/fetchers'
 
 enum ConnectorNames {
   Injected = 'Injected',
-  Network = 'Network',
+  // Network = 'Network',
   WalletConnect = 'WalletConnect',
-  WalletLink = 'WalletLink',
-  Ledger = 'Ledger',
-  Trezor = 'Trezor',
-  Lattice = 'Lattice',
-  Frame = 'Frame',
-  Authereum = 'Authereum',
+  // WalletLink = 'WalletLink',
+  // Ledger = 'Ledger',
+  // Trezor = 'Trezor',
+  // Lattice = 'Lattice',
+  // Frame = 'Frame',
+  // Authereum = 'Authereum',
   // Fortmatic = 'Fortmatic',
   // Magic = 'Magic',
   // Portis = 'Portis',
-  Torus = 'Torus',
+  // Torus = 'Torus',
 }
 
 const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.Injected]: injected,
-  [ConnectorNames.Network]: network,
+  // [ConnectorNames.Network]: network,
   [ConnectorNames.WalletConnect]: walletconnect,
-  [ConnectorNames.WalletLink]: walletlink,
-  [ConnectorNames.Ledger]: ledger,
-  [ConnectorNames.Trezor]: trezor,
-  [ConnectorNames.Lattice]: lattice,
-  [ConnectorNames.Frame]: frame,
-  [ConnectorNames.Authereum]: authereum,
+  // [ConnectorNames.WalletLink]: walletlink,
+  // [ConnectorNames.Ledger]: ledger,
+  // [ConnectorNames.Trezor]: trezor,
+  // [ConnectorNames.Lattice]: lattice,
+  // [ConnectorNames.Frame]: frame,
+  // [ConnectorNames.Authereum]: authereum,
   // [ConnectorNames.Fortmatic]: fortmatic,
   // [ConnectorNames.Magic]: magic,
   // [ConnectorNames.Portis]: portis,
-  [ConnectorNames.Torus]: torus,
+  // [ConnectorNames.Torus]: torus,
 }
 
 // function getErrorMessage(error: Error) {
@@ -157,10 +157,7 @@ const App = () => {
                   mt={2}
                   variant="tertiary"
                   sx={{
-                    height: '3rem',
-                    borderRadius: '1rem',
                     borderColor: activating ? 'orange' : connected ? 'green' : 'unset',
-                    cursor: disabled ? 'unset' : 'pointer',
                     position: 'relative',
                   }}
                   disabled={disabled}

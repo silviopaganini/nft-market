@@ -1,7 +1,10 @@
 import { FormEvent, MouseEvent, useState } from 'react'
 import { utils, BigNumber, constants } from 'ethers'
-import { Box, Flex, Card, Button, Image, Input, Text, Heading, Divider } from 'theme-ui'
+import { Spinner, Box, Flex, Card, Button, Image, Input, Text, Heading, Divider } from 'theme-ui'
+import useSWR from 'swr'
 import { useStateContext } from '../../state'
+import { fetcherMetadata } from '../../utils/fetchers'
+import { METADATA_API } from '../../utils'
 
 export type TokenProps = {
   id: string
@@ -67,19 +70,28 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
     }
   }
 
+  const { data } = useSWR(`${METADATA_API}/token?id=${token.id}`, fetcherMetadata)
+
   const tokenPriceEth = new Intl.NumberFormat('us-GB', {
     style: 'currency',
     currency: 'USD',
   }).format(Number(utils.formatEther(token.price)) * Number(ethPrice))
 
+  if (!data)
+    return (
+      <Card variant="nft">
+        <Spinner />
+      </Card>
+    )
+
   return (
     <Card variant="nft">
       <Image
         sx={{ width: '100%', bg: 'white', borderBottom: '1px solid black' }}
-        src={`https://ipfs.io/ipfs/${token.uri}`}
+        src={data.image}
       />
       <Box p={3} pt={2}>
-        <Heading as="h2">{token.name}</Heading>
+        <Heading as="h2">{data.name}</Heading>
         <Divider variant="divider.nft" />
         <Box>
           <Text sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>Price</Text>
