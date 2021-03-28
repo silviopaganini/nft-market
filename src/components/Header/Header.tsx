@@ -18,7 +18,7 @@ const Header = () => {
         src="/static/logo.png"
       />
       <Heading sx={{ ml: 2, color: 'white' }} as="h4">
-        Metamask + ERC721 Prototype
+        ERC721 Marketplace + OpenSea.io on Rinkeby Network
       </Heading>
       <UserMenu />
     </Flex>

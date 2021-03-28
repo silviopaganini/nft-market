@@ -75,6 +75,22 @@ export default {
       textAlign: 'left',
     },
   },
+  links: {
+    openSea: {
+      color: 'green',
+      fontSize: 1,
+      opacity: 0.5,
+      '&:after': {
+        content: `url("data:image/svg+xml,%3Csvg width='8' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.262 0l2.529 2.524L0 6.314 1.685 8l3.79-3.79L8 6.732V0z' fill='rgb(99, 255, 203)' fill-rule='nonzero' /%3E%3C/svg%3E")`,
+        ml: 1,
+      },
+      transition: 'all .2s ease-out',
+      '&:hover': {
+        filter: 'brightness(1.2)',
+        color: 'green',
+      },
+    },
+  },
   buttons: {
     primary: {
       ...defaultButton,

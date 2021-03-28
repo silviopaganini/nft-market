@@ -1,6 +1,18 @@
 import { FormEvent, MouseEvent, useState } from 'react'
 import { utils, BigNumber, constants } from 'ethers'
-import { Spinner, Box, Flex, Card, Button, Image, Input, Text, Heading, Divider } from 'theme-ui'
+import {
+  Spinner,
+  Box,
+  Flex,
+  Card,
+  Button,
+  Image,
+  Input,
+  Text,
+  Heading,
+  Divider,
+  NavLink,
+} from 'theme-ui'
 import useSWR from 'swr'
 import { useStateContext } from '../../state'
 import { fetcherMetadata } from '../../utils/fetchers'
@@ -35,7 +47,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
   const [address, setAddress] = useState<string>('')
   const [price, setPrice] = useState<string>('')
   const {
-    state: { user, ethPrice },
+    state: { user, ethPrice, contract },
   } = useStateContext()
 
   const onTransferClick = async (e: FormEvent | MouseEvent) => {
@@ -101,6 +113,13 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
               ({tokenPriceEth})
             </Text>
           </Heading>
+          <NavLink
+            target="_blank"
+            href={`https://testnets.opensea.io/assets/${contract?.details.address}/${token.id}`}
+            variant="openSea"
+          >
+            View on Opensea.io
+          </NavLink>
         </Box>
 
         {onTransfer && (
