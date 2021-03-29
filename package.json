@@ -5,6 +5,7 @@
   "dependencies": {
     "@ethersproject/providers": "^5.0.24",
     "@openzeppelin/contracts": "^4.0.0",
+    "@openzeppelin/contracts-upgradeable": "^4.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^13.0.16",
@@ -55,7 +56,7 @@
     "clean": "rm -rf build/contracts && rm -rf ./src/contracts && mkdir ./src/contracts",
     "copy-contracts": "cp -a ./build/contracts/. ./src/contracts",
     "migrate": "yarn clean && truffle migrate --network development --reset && yarn copy-contracts",
-    "migrate:ropsten": "yarn clean && truffle migrate --network ropsten --reset && yarn copy-contracts",
+    "migrate:populate": "yarn clean && truffle migrate --network development --reset && yarn copy-contracts && yarn populate",
     "migrate:rinkeby": "yarn clean && truffle migrate --network rinkeby --reset && yarn copy-contracts",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"

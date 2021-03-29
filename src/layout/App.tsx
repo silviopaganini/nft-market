@@ -111,7 +111,7 @@ const App = () => {
 
   const { data: ethPrice } = useSWR(ETHSCAN_API, fetcherETHUSD)
 
-  console.log(account)
+  // console.log(account)
 
   useEffect(() => {
     dispatch({ type: ActionType.ETH_PRICE, payload: ethPrice })

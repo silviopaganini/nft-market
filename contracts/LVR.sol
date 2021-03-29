@@ -2,13 +2,13 @@
 pragma solidity >=0.4.22 <0.9.0;
 pragma experimental ABIEncoderV2;
 
-import "../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
-import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
+import "../node_modules/@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "../node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "../node_modules/@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
-contract LVR is ERC721, Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
+contract LVR is ERC721Upgradeable, OwnableUpgradeable {
+    using CountersUpgradeable for CountersUpgradeable.Counter;
+    CountersUpgradeable.Counter private _tokenIds;
 
     string baseURI = "https://rh25q24tvf.execute-api.eu-west-2.amazonaws.com/dev/token?id=";
 
@@ -22,7 +22,9 @@ contract LVR is ERC721, Ownable {
         bool sale;
     }
 
-    constructor() ERC721("LVR", "LVR") {}
+    function initialize() public initializer {
+        __ERC721_init("LVR", "LVR");
+    }
 
     function _baseURI() internal view virtual override returns (string memory) {
         return baseURI;

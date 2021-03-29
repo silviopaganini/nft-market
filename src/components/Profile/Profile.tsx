@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import { utils, BigNumber } from 'ethers'
 import { Text, Box, Heading, Grid, Divider } from 'theme-ui'
 import { Token } from '..'
-import { updateUser } from '../../actions'
+import { updateTokensOnSale, updateUser } from '../../actions'
 import { useStateContext } from '../../state'
 
 export type ProfileProps = {}
@@ -13,6 +13,8 @@ const Profile = () => {
   const { library } = useWeb3React()
 
   if (!user) return null
+
+  console.log(tokensOnSale)
 
   const { address, balance, ownedTokens } = user
 
@@ -73,12 +75,15 @@ const Profile = () => {
     if (!contract?.payload || !user?.address) return false
     try {
       await contract.payload.setTokenSale(id, onSale, price)
+      await updateTokensOnSale({ dispatch, contract: contract?.payload })
       return await onConfirmTransfer()
     } catch (e) {
       console.log(e)
       return false
     }
   }
+
+  console.log(tokensOnSale)
 
   return (
     <Box>

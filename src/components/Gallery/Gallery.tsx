@@ -2,9 +2,9 @@ import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'ethers'
 import { useCallback, useEffect } from 'react'
 import { Box, Grid, Heading } from 'theme-ui'
-import { updateUser } from '../../actions'
-import { ActionType, useStateContext } from '../../state'
-import Token, { TokenProps } from '../Token'
+import { updateTokensOnSale, updateUser } from '../../actions'
+import { useStateContext } from '../../state'
+import { Token } from '..'
 
 export type GalleryProps = {}
 
@@ -35,22 +35,8 @@ const Gallery = () => {
   }
 
   const loadTokensForSale = useCallback(async () => {
-    try {
-      const tokensForSale = (await contract?.payload.getAllOnSale()).reduce(
-        (acc: TokenProps[], b: any) => {
-          if (b.uri !== '') {
-            acc.push({ id: b.id, price: b.price, name: b.name, uri: b.uri })
-          }
-
-          return acc
-        },
-        [] as TokenProps[]
-      )
-
-      dispatch({ type: ActionType.LOAD_TOKEN_SALE, payload: tokensForSale })
-    } catch (e) {
-      console.log(e)
-    }
+    if (!dispatch || !contract?.payload) return
+    updateTokensOnSale({ dispatch, contract: contract.payload })
   }, [dispatch, contract])
 
   const onBuyTokenClick = ({ id, price }: { id: string; price: BigNumber }) => {
