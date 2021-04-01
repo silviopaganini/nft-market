@@ -9,29 +9,26 @@ const listTokensFrom = (contract: Contract, address: string) =>
       const ownedTokensEvents = contract.filters.Transfer(null, address)
       const results: Event[] = await contract.queryFilter(ownedTokensEvents, 0, 'latest')
 
-      const ownedTokens: TokenProps[] = await Promise.all(
-        await results.reduce(async (acc: Promise<TokenProps[]>, current: Event) => {
-          const accumulator = await acc
-
+      const ownedTokens: Map<string, TokenProps> = new Map()
+      await Promise.all(
+        results.map(async current => {
           const ownerToken = await contract.ownerOf(current.args?.tokenId)
 
           if (ownerToken === address) {
             const { id, name, price } = await contract.tokenMeta(current.args?.tokenId)
             const uri = await contract.tokenURI(current.args?.tokenId)
 
-            accumulator.push({
+            ownedTokens.set(uri, {
               id,
               name,
               price,
               uri,
             })
           }
-
-          return accumulator
-        }, Promise.resolve([] as TokenProps[]))
+        })
       )
 
-      resolve(ownedTokens)
+      resolve(Array.from(ownedTokens).map(([_, token]) => token))
     } catch (e) {
       reject(e)
     }

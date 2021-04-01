@@ -14,8 +14,6 @@ const Profile = () => {
 
   if (!user) return null
 
-  console.log(tokensOnSale)
-
   const { address, balance, ownedTokens } = user
 
   const onConfirmTransfer = async (): Promise<boolean> => {
@@ -74,7 +72,7 @@ const Profile = () => {
   }): Promise<boolean> => {
     if (!contract?.payload || !user?.address) return false
     try {
-      await contract.payload.setTokenSale(id, onSale, price)
+      await contract.payload.setTokenSale(id, onSale, price, { from: user.address })
       await updateTokensOnSale({ dispatch, contract: contract?.payload })
       return await onConfirmTransfer()
     } catch (e) {
@@ -82,8 +80,6 @@ const Profile = () => {
       return false
     }
   }
-
-  console.log(tokensOnSale)
 
   return (
     <Box>

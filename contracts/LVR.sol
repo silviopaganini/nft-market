@@ -11,9 +11,9 @@ contract LVR is ERC721Upgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeabl
     using CountersUpgradeable for CountersUpgradeable.Counter;
     CountersUpgradeable.Counter private _tokenIds;
 
-    string baseURI = "https://rh25q24tvf.execute-api.eu-west-2.amazonaws.com/dev/token?id=";
-
     mapping (uint256 => TokenMeta) private _tokenMeta;
+
+    string baseURI;
 
     struct TokenMeta {
         uint256 id;
@@ -24,10 +24,17 @@ contract LVR is ERC721Upgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeabl
     }
 
     function initialize() public initializer {
-        __ERC721_init("LVR", "LVR");
+        OwnableUpgradeable.__Ownable_init();
+        ReentrancyGuardUpgradeable.__ReentrancyGuard_init();
+        ERC721Upgradeable.__ERC721_init("LVR", "LVR");
+        setBaseURI("https://rh25q24tvf.execute-api.eu-west-2.amazonaws.com/dev/token?id=");
     }
 
-    function _baseURI() internal view virtual override returns (string memory) {
+    /**
+     * @dev Base URI for computing {tokenURI}. Empty by default, can be overriden
+     * in child contracts.
+     */
+    function _baseURI() internal view override virtual returns (string memory) {
         return baseURI;
     }
 
@@ -56,10 +63,13 @@ contract LVR is ERC721Upgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeabl
      * 
      * Requirements: 
      * `tokenId` must exist
+     * `price` must be more than 0
+     * `owner` must the msg.owner
      */
     function setTokenSale(uint256 _tokenId, bool _sale, uint256 _price) public {
         require(_exists(_tokenId), "ERC721Metadata: Sale set of nonexistent token");
         require(_price > 0);
+        require(ownerOf(_tokenId) == _msgSender());
 
         _tokenMeta[_tokenId].sale = _sale;
         setTokenPrice(_tokenId, _price);
@@ -72,9 +82,11 @@ contract LVR is ERC721Upgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeabl
      * 
      * Requirements: 
      * `tokenId` must exist
+     * `owner` must the msg.owner
      */
     function setTokenPrice(uint256 _tokenId, uint256 _price) public {
         require(_exists(_tokenId), "ERC721Metadata: Price set of nonexistent token");
+        require(ownerOf(_tokenId) == _msgSender());
         _tokenMeta[_tokenId].price = _price;
     }
 
@@ -83,8 +95,18 @@ contract LVR is ERC721Upgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeabl
         return _tokenMeta[tokenId].price;
     }
 
+    /**
+     * @dev sets token meta
+     * @param _tokenId uint256 token ID (token number)
+     * @param _meta TokenMeta 
+     * 
+     * Requirements: 
+     * `tokenId` must exist
+     * `owner` must the msg.owner
+     */
     function _setTokenMeta(uint256 _tokenId, TokenMeta memory _meta) private {
         require(_exists(_tokenId));
+        require(ownerOf(_tokenId) == _msgSender());
         _tokenMeta[_tokenId] = _meta;
     }
 
@@ -117,6 +139,7 @@ contract LVR is ERC721Upgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeabl
         bool _sale
     )
         public
+        onlyOwner
         returns (uint256)
     {
         require(_price > 0);

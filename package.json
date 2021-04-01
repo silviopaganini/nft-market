@@ -80,6 +80,7 @@
     ]
   },
   "devDependencies": {
+    "@openzeppelin/truffle-upgrades": "^1.5.0",
     "@storybook/addon-actions": "^6.1.21",
     "@storybook/addon-essentials": "^6.1.21",
     "@storybook/addon-links": "^6.1.21",

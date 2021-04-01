@@ -1,16 +1,23 @@
 require('dotenv').config()
+const HDWalletProvider = require('@truffle/hdwallet-provider')
 const colors = require('colors')
 const fetch = require('node-fetch')
-const { utils } = require('ethers')
+const { utils, ethers } = require('ethers')
 const LVR = artifacts.require('LVR.sol')
-
-const ADDRESS = '0x4545f57c253B8e610C7CC891df62C3EF497ce5Bf'
 
 const { REACT_APP_SERVICE_URL: SERVICE_URL } = process.env
 
 const start = async callback => {
   try {
     const objectsToBeMinted = []
+
+    const accounts = () =>
+      new HDWalletProvider({
+        mnemonic: process.env.KEY_MNEMONIC,
+        providerOrUrl: process.env.WALLET_PROVIDER_URL,
+      })
+
+    const FROM = ethers.utils.getAddress(accounts().getAddresses()[0])
 
     for (let i = 1; i < 11; i++) {
       objectsToBeMinted.push(`Robot ${i}`)
@@ -35,7 +42,9 @@ const start = async callback => {
           name: token.name,
           path: token.path,
         })
-        return await contract.mintCollectable(ADDRESS, token.path, token.name, priceWei, true)
+        return await contract.mintCollectable(FROM, token.path, token.name, priceWei, true, {
+          from: FROM,
+        })
       })
     )
 
