@@ -4,9 +4,10 @@ pragma experimental ABIEncoderV2;
 
 import "../node_modules/@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "../node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "../node_modules/@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "../node_modules/@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
-contract LVR is ERC721Upgradeable, OwnableUpgradeable {
+contract LVR is ERC721Upgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
     CountersUpgradeable.Counter private _tokenIds;
 
@@ -96,7 +97,7 @@ contract LVR is ERC721Upgradeable, OwnableUpgradeable {
      * @dev purchase _tokenId
      * @param _tokenId uint256 token ID (token number)
      */
-    function purchaseToken(uint256 _tokenId) public payable {
+    function purchaseToken(uint256 _tokenId) public payable nonReentrant {
         require(msg.sender != address(0) && msg.sender != ownerOf(_tokenId));
         require(msg.value >= _tokenMeta[_tokenId].price);
         address tokenSeller = ownerOf(_tokenId);
