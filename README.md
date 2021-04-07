@@ -1,5 +1,8 @@
 # NFT Marketplace Prototype
 
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
+
 Prototype of a NFT Marketplace based on openZeppelin abstract ERC721 contracts and Minting/uploading images to IPFS and integration with Opensea.io
 
 The following functionalities were tested: 
@@ -23,7 +26,7 @@ See [my portfolio](https://s2paganini.com/case/ckm0zl44o0w1i0a54lryryi1d) for mo
 
 <hr />
 
-## Tech-Stack
+## ⚡️ Tech-Stack
 
 - Typescript
 - Solidity
@@ -37,3 +40,11 @@ See [my portfolio](https://s2paganini.com/case/ckm0zl44o0w1i0a54lryryi1d) for mo
 - IPFS
 - Lambda AWS
 - serverless
+
+## 💰 Sponsor this project
+
+Donations in ETH or BTC are welcome 
+
+**ETH** 0xD20634a78Fa0e98104419a63C278648ccCff4Ce7
+
+**BTC** 35pDYqWj5zyogGbNb15W44e9veu6899cZj
