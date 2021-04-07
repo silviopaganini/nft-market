@@ -67,8 +67,6 @@ const Connect: FC = ({ children }) => {
   const triedEager = useEagerConnect()
   useInactiveListener(!triedEager || !!activatingConnector)
 
-  // console.log(injected.supportedChainIds, chainId)
-
   return (
     <>
       {error ? (
