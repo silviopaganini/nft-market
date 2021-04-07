@@ -123,6 +123,11 @@ export default {
       minWidth: 'auto',
       py: 2,
     },
+    connect: {
+      variant: 'buttons.tertiary',
+      py: 4,
+      px: 5,
+    },
   },
   fontWeights: {
     heading: 300,

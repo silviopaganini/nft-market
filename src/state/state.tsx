@@ -10,6 +10,7 @@ export interface StateContext {
   user?: UserProps
   tokensOnSale?: TokenProps[]
   ethPrice?: string
+  activatingConnector?: any
 }
 export interface Store {
   state: StateContext

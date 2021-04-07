@@ -15,6 +15,7 @@
     "@types/node": "^14.14.37",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@web3-react/abstract-connector": "^6.0.7",
     "@web3-react/authereum-connector": "^6.1.9",
     "@web3-react/core": "^6.1.9",
     "@web3-react/fortmatic-connector": "^6.1.6",

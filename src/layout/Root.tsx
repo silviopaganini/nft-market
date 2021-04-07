@@ -2,9 +2,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Web3ReactProvider } from '@web3-react/core'
 import { Web3Provider } from '@ethersproject/providers'
 
-import { App, Profile } from './'
-import { Header } from '../components'
-import { PrivateRoute } from '../components/PrivateRoute'
+import { App, Profile, Connect } from './'
+import { Header, PrivateRoute } from '../components'
 
 function getLibrary(provider: any): Web3Provider {
   const library = new Web3Provider(provider)
@@ -17,12 +16,12 @@ const Root = () => {
     <Router>
       <Header />
       <Web3ReactProvider getLibrary={getLibrary}>
-        <Switch>
-          <PrivateRoute path="/profile" component={Profile} />
-          <Route path="/">
-            <App />
-          </Route>
-        </Switch>
+        <Connect>
+          <Switch>
+            <PrivateRoute path="/profile" component={Profile} />
+            <Route path="/" component={App} />
+          </Switch>
+        </Connect>
       </Web3ReactProvider>
     </Router>
   )

@@ -8,6 +8,7 @@ export enum ActionType {
   CONTRACT = 'Contract',
   LOAD_TOKEN_SALE = 'Load tokens on Sale',
   ETH_PRICE = 'Eth price',
+  SET_CONNECTOR = 'Set Connector',
 }
 
 export type Action =
@@ -15,12 +16,15 @@ export type Action =
   | { type: ActionType.CONTRACT; payload: ContractProps }
   | { type: ActionType.UPDATE_USER; payload: UserProps }
   | { type: ActionType.SIGN_OUT; payload?: any }
+  | { type: ActionType.SET_CONNECTOR; payload?: any }
   | { type: ActionType.LOAD_TOKEN_SALE; payload?: TokenProps[] }
 
 export const reducer = (state: StateContext, action: Action) => {
   switch (action.type) {
     case ActionType.ETH_PRICE:
       return { ...state, ethPrice: action.payload }
+    case ActionType.SET_CONNECTOR:
+      return { ...state, activatingConnector: action.payload }
     case ActionType.UPDATE_USER:
       return { ...state, isAuthenticated: true, user: action.payload }
     case ActionType.SIGN_OUT:
