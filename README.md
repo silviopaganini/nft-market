@@ -1,10 +1,10 @@
-# NFT Marketplace Prototype
+# NFT Marketplace 
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 ![GitHub](https://img.shields.io/github/license/silviopaganini/nft-market?style=flat-square)
 
 
-Prototype of a NFT Marketplace based on openZeppelin abstract ERC721 contracts and Minting/uploading images to IPFS and integration with Opensea.io
+Prototype of a NFT Marketplace based on openZeppelin abstract upgradeable ERC721 contracts and Minting/uploading images to IPFS and integration with Opensea.io
 
 The following functionalities were tested: 
 
