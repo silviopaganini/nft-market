@@ -1,6 +1,6 @@
 {
-  "name": "eth",
-  "version": "0.1.0",
+  "name": "@fluuuid/nft-marketplace",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@ethersproject/providers": "^5.0.24",
