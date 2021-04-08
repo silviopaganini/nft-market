@@ -42,6 +42,23 @@ See [my portfolio](https://s2paganini.com/case/ckm0zl44o0w1i0a54lryryi1d) for mo
 - Lambda AWS
 - serverless
 
+## 🔧 .env file 
+
+```
+KEY_MNEMONIC=
+WALLET_PROVIDER_URL=http://0.0.0.0:7545
+RPC_HOST=0.0.0.0
+NODE_ENV=development
+REACT_APP_HOST=0.0.0.0
+REACT_APP_PORT=7545
+REACT_APP_APIETHERSCAN=
+BROWSER=chrome
+# REACT_APP_SERVICE_URL=http://localhost:4000/dev
+REACT_APP_RPC_URL_1=http://0.0.0.0:7545
+REACT_APP_RPC_URL_4=http://0.0.0.0:7545
+INFURA_PROJECT_ID=
+```
+
 ## 💰 Sponsor this project
 
 Donations in ETH or BTC are welcome 
