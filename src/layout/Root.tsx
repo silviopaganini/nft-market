@@ -19,7 +19,7 @@ const Root = () => {
         <Connect>
           <Switch>
             <PrivateRoute path="/profile" component={Profile} />
-            <Route path="/" component={App} />
+            <Route exact path="/" component={App} />
           </Switch>
         </Connect>
       </Web3ReactProvider>
