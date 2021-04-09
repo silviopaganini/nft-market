@@ -1,16 +1,16 @@
-import { Story, Meta } from "@storybook/react/types-6-0"
+import { Story, Meta } from '@storybook/react/types-6-0'
 
-import UserMenu, { UserMenuProps } from "./UserMenu"
+import UserMenu, { UserMenuProps } from './UserMenu'
 
 export default {
-  title: "CHANGE ME/UserMenu",
+  title: 'CHANGE ME/UserMenu',
   component: UserMenu,
   parameters: {
-    layout: "padded",
+    layout: 'padded',
   },
 } as Meta
 
-const Template: Story<UserMenuProps> = (args) => <UserMenu {...args} />
+const Template: Story<UserMenuProps> = args => <UserMenu {...args} />
 
 export const Default = Template.bind({})
 Default.args = {} as UserMenuProps

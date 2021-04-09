@@ -1,1 +1,1 @@
-export { default } from "./Identicon"
+export { default } from './Identicon'
