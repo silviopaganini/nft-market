@@ -1,7 +1,6 @@
 {
   "name": "@fluuuid/nft-marketplace",
-  "version": "1.0.1",
-  "private": true,
+  "version": "1.0.2",
   "homepage" : "https://nft.s2paganini.com",
   "dependencies": {
     "@ethersproject/constants": "^5.1.0",
