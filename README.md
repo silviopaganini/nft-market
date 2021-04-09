@@ -6,7 +6,11 @@
 
 Prototype of a NFT Marketplace based on openZeppelin abstract upgradeable ERC721 contracts and Minting/uploading images to IPFS and integration with Opensea.io
 
-The following functionalities were tested: 
+## ⚙️ Dependencies
+
+This project relies on [NFT Contracts](https://github.com/silviopaganini/nft-contracts) package and [NFT Lambda Service](https://github.com/silviopaganini/nft-market-service) for serving the metadata
+
+## 🔬 Functionalities
 
 1. Buy a pre-minted token.
 2. Sell the token that was bought.
@@ -45,16 +49,13 @@ See [my portfolio](https://s2paganini.com/case/ckm0zl44o0w1i0a54lryryi1d) for mo
 ## 🔧 .env file 
 
 ```
-KEY_MNEMONIC=
-WALLET_PROVIDER_URL=http://0.0.0.0:7545
-RPC_HOST=0.0.0.0
 NODE_ENV=development
 BROWSER=chrome
-REACT_APP_APIETHERSCAN=
+REACT_APP_APIETHERSCAN=NWXGT5TCA3VRXG6EHSAVUBF39TGXBKXKHD
 REACT_APP_SERVICE_URL=http://localhost:4000/dev
 REACT_APP_RPC_URL_1=http://0.0.0.0:7545
-REACT_APP_RPC_URL_4=https://rinkeby.infura.io/v3/{INFURA_PROJECT_ID}
-INFURA_PROJECT_ID=
+REACT_APP_RPC_URL_4=https://rinkeby.infura.io/v3/INFURA_KEY
+
 ```
 
 ## 💰 Sponsor this project
