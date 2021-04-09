@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "rm -rf docs && react-scripts build && mv build docs",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "prettier --write './**/*.{js,jsx,ts,tsx}'",
@@ -56,10 +56,10 @@
     "populate:rinkeby": "truffle exec --network rinkeby devops/mintPopulateGallery.js",
     "cp": "./node_modules/create-react-component-folder/lib/index.js -f --typescript --nocss --stories -ns -o src/components",
     "clean": "rm -rf build/contracts && rm -rf ./src/contracts && mkdir ./src/contracts",
-    "copy-contracts": "cp -a ./build/contracts/. ./src/contracts",
-    "migrate": "yarn clean && truffle migrate --network development --reset && yarn copy-contracts",
-    "migrate:populate": "yarn clean && truffle migrate --network development --reset && yarn copy-contracts && yarn populate",
-    "migrate:rinkeby": "yarn clean && truffle migrate --network rinkeby --reset && yarn copy-contracts",
+    "compile": "truffle compile",
+    "migrate": "yarn clean && truffle migrate --network development --reset",
+    "migrate:populate": "yarn clean && truffle migrate --network development --reset && yarn populate",
+    "migrate:rinkeby": "yarn clean && truffle migrate --network rinkeby --reset",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
