@@ -40,12 +40,14 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "postinstall": "husky install",
     "start": "react-scripts start",
     "build": "rm -rf docs && react-scripts build && mv build/ docs/ ",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "prettier --write './**/*.{js,jsx,ts,tsx}'",
     "cp": "./node_modules/create-react-component-folder/lib/index.js -f --typescript --nocss --stories -ns -o src/components",
+    "tsc": "tsc --noEmit --skipLibCheck --project tsconfig.json",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
@@ -78,6 +80,7 @@
     "@types/theme-ui": "^0.3.7",
     "colors": "^1.4.0",
     "create-react-component-folder": "^0.3.7",
+    "husky": "^6.0.0",
     "prettier": "^2.2.1",
     "yargs": "^16.2.0"
   }
