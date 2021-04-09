@@ -1,6 +1,6 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
-import { NetworkConnector } from '@web3-react/network-connector'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+// import { NetworkConnector } from '@web3-react/network-connector'
+// import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 // import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 // import { LedgerConnector } from '@web3-react/ledger-connector'
 // import { TrezorConnector } from '@web3-react/trezor-connector'
@@ -14,31 +14,31 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 
 export enum ConnectorNames {
   Metamask = 'Metamask',
-  WalletConnect = 'WalletConnect',
+  // WalletConnect = 'WalletConnect',
 }
 
-const POLLING_INTERVAL = 12000
-const RPC_URLS: { [chainId: number]: string } = {
-  1: process.env.REACT_APP_RPC_URL_1 as string,
-  4: process.env.REACT_APP_RPC_URL_4 as string,
-}
+// const POLLING_INTERVAL = 12000
+// const RPC_URLS: { [chainId: number]: string } = {
+//   1: process.env.REACT_APP_RPC_URL_1 as string,
+//   4: process.env.REACT_APP_RPC_URL_4 as string,
+// }
 
 export const injected = new InjectedConnector({ supportedChainIds: [5777, 1337, 4] })
 
-export const network = new NetworkConnector({
-  urls: {
-    1337: RPC_URLS[1],
-    4: RPC_URLS[4],
-  },
-  defaultChainId: 1337,
-})
+// export const network = new NetworkConnector({
+//   urls: {
+//     1337: RPC_URLS[1],
+//     4: RPC_URLS[4],
+//   },
+//   defaultChainId: 1337,
+// })
 
-export const walletconnect = new WalletConnectConnector({
-  rpc: { 4: RPC_URLS[4] },
-  bridge: 'https://bridge.walletconnect.org',
-  qrcode: true,
-  pollingInterval: POLLING_INTERVAL,
-})
+// export const walletconnect = new WalletConnectConnector({
+//   rpc: { 4: RPC_URLS[4] },
+//   bridge: 'https://bridge.walletconnect.org',
+//   qrcode: true,
+//   pollingInterval: POLLING_INTERVAL,
+// })
 
 // export const walletlink = new WalletLinkConnector({
 //   url: RPC_URLS[1],
@@ -90,7 +90,7 @@ export const walletconnect = new WalletConnectConnector({
 export const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.Metamask]: injected,
   // [ConnectorNames.Network]: network,
-  [ConnectorNames.WalletConnect]: walletconnect,
+  // [ConnectorNames.WalletConnect]: walletconnect,
   // [ConnectorNames.WalletLink]: walletlink,
   // [ConnectorNames.Ledger]: ledger,
   // [ConnectorNames.Trezor]: trezor,

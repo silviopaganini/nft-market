@@ -1,4 +1,4 @@
-import { Container, Grid, Button, Spinner, Image } from 'theme-ui'
+import { Container, Flex, Button, Spinner, Image } from 'theme-ui'
 import { useWeb3React } from '@web3-react/core'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
@@ -17,7 +17,7 @@ const App = () => {
     <Container>
       {!user ? (
         <>
-          <Grid gap="1rem" columns="1fr 1fr">
+          <Flex sx={{ justifyContent: 'center' }}>
             {Object.keys(connectorsByName).map((name: string) => {
               const currentConnector = connectorsByName[name as keyof typeof connectorsByName]
               const activating = currentConnector === activatingConnector
@@ -30,6 +30,7 @@ const App = () => {
                   sx={{
                     borderColor: activating ? 'orange' : connected ? 'green' : 'unset',
                     position: 'relative',
+                    maxWidth: 250,
                   }}
                   key={name}
                   onClick={() => {
@@ -39,7 +40,6 @@ const App = () => {
                     )
                   }}
                 >
-                  {activating && <Spinner />}
                   {currentConnector === connectorsByName.Metamask && (
                     <Image
                       sx={{ width: 35, height: 35 }}
@@ -48,10 +48,11 @@ const App = () => {
                     />
                   )}
                   {name}
+                  {activating && <Spinner size={20} color="white" sx={{ ml: 3 }} />}
                 </Button>
               )
             })}
-          </Grid>
+          </Flex>
         </>
       ) : (
         <Gallery />
