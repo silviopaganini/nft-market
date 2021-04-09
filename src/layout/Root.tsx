@@ -13,7 +13,7 @@ function getLibrary(provider: any): Web3Provider {
 
 const Root = () => {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Header />
       <Web3ReactProvider getLibrary={getLibrary}>
         <Connect>
