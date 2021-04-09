@@ -1,7 +1,9 @@
 import { Flex, Heading, Box } from 'theme-ui'
-import { toSvg } from 'jdenticon'
-import { useStateContext } from '../../state'
 import { useHistory } from 'react-router'
+import { EtherSymbol } from '@ethersproject/constants'
+import { useStateContext } from '../../state'
+import { Identicon } from '..'
+import { toShort } from '../../utils'
 
 export type UserMenuProps = {
   //
@@ -18,9 +20,15 @@ const UserMenu = () => {
     <Flex sx={{ ml: 'auto', justifySelf: 'flex-end' }}>
       {isAuthenticated && user && (
         <>
-          <Heading sx={{ color: 'white' }} as="h5">
-            {user.address}
-          </Heading>
+          <Box>
+            <Heading sx={{ p: 0, color: 'white' }} as="h4">
+              {toShort(user.address)}
+            </Heading>
+            <Heading sx={{ p: 0, mt: 1, textAlign: 'right', color: 'white' }} as="h5">
+              {EtherSymbol}
+              {user.balance}
+            </Heading>
+          </Box>
           <Box
             onClick={() => {
               history.push('/profile')
@@ -30,11 +38,11 @@ const UserMenu = () => {
               ml: 3,
               height: 30,
               width: 30,
-              bg: 'white',
               borderRadius: '100%',
             }}
-            dangerouslySetInnerHTML={{ __html: toSvg(user.address, 30) }}
-          />
+          >
+            <Identicon size={30} address={user.address} />
+          </Box>
         </>
       )}
     </Flex>

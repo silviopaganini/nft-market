@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@ethersproject/constants": "^5.1.0",
     "@ethersproject/providers": "^5.0.24",
     "@openzeppelin/contracts": "^4.0.0",
     "@openzeppelin/contracts-upgradeable": "^4.0.0",
@@ -32,7 +33,7 @@
     "@web3-react/walletlink-connector": "^6.1.9",
     "dotenv": "^8.2.0",
     "ethers": "^5.0.32",
-    "jdenticon": "^3.1.0",
+    "jazzicon": "^1.5.0",
     "node-fetch": "^2.6.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
