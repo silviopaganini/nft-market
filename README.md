@@ -23,8 +23,6 @@ This project relies on [NFT Contracts](https://github.com/silviopaganini/nft-con
 
 <hr />
 
-See the [source for the IPFS and Metadata Lambda service](https://github.com/silviopaganini/nft-market-service)
-
 See it live on [Rinkeby Network](https://nft.s2paganini.com) 
 
 See [my portfolio](https://s2paganini.com/case/ckm0zl44o0w1i0a54lryryi1d) for more details 
