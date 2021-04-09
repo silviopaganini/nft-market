@@ -41,7 +41,7 @@ export function useInactiveListener(suppress: boolean = false) {
   useEffect(() => {
     const { ethereum } = window as any
 
-    ethereum.autoRefreshOnNetworkChange = true
+    if (ethereum) ethereum.autoRefreshOnNetworkChange = true
 
     // if (ethereum && ethereum.on && !active && !error && !suppress) {
     //   const handleConnect = () => {

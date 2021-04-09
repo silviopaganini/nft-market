@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { ThemeProvider } from 'theme-ui'
-import { Root } from './layout'
 import reportWebVitals from './reportWebVitals'
+import { Root } from './layout'
 import { StateProvider } from './state/state'
 import theme from './theme'
 
