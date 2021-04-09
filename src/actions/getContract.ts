@@ -1,5 +1,5 @@
 import { ActionProps } from '.'
-import LVR from '../contracts/LVR.json'
+import NFTT from '@fluuuid/nft-contracts/build/contracts/NFTT.json'
 import { Contract } from 'ethers'
 import { ActionType } from '../state'
 
@@ -20,14 +20,14 @@ const getContract = async ({ dispatch, library, chainId }: Props) => {
   }
 
   try {
-    const deployedNetwork = LVR.networks[String(networkid(chainId)) as keyof typeof LVR.networks]
+    const deployedNetwork = NFTT.networks[String(networkid(chainId)) as keyof typeof NFTT.networks]
 
     if (!deployedNetwork) {
       throw new Error('The network you selected is no supported yet.')
     }
 
     const { address } = deployedNetwork
-    const contract = new Contract(address, LVR.abi, library.getSigner())
+    const contract = new Contract(address, NFTT.abi, library.getSigner())
 
     const name = await contract.name()
     const symbol = await contract.symbol()
