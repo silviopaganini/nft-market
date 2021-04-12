@@ -5,7 +5,7 @@ const defaultButton = {
   fontFamily: 'body',
   fontWeight: 'normal',
   lineHeight: 'body',
-  fontSize: 2,
+  fontSize: [1, 2],
   paddingX: 3,
   paddingY: 2,
   outline: 'none',
@@ -42,7 +42,7 @@ export type PaletteKeys = keyof typeof Palette
 export const Sizes = {
   header: 60,
   container: 1020,
-  button: 250,
+  button: [100, 250],
   logo: 60,
   sidemenu: 240,
   chart: 950,
@@ -203,7 +203,7 @@ export default {
       fontFamily: 'heading',
       lineHeight: 'subheading',
       fontWeight: 'bold',
-      fontSize: 2,
+      fontSize: [1, 2],
     },
     h5: {
       fontFamily: 'heading',

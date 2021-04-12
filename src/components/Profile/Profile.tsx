@@ -84,15 +84,19 @@ const Profile = () => {
   return (
     <Box>
       <Heading as="h1">My Profile</Heading>
-      <Grid columns="1fr 1fr" sx={{ gap: '0 20px' }}>
-        <Heading as="h4" sx={{ color: 'green' }}>
-          Address
-        </Heading>
-        <Heading as="h4" sx={{ color: 'green' }}>
-          Balance
-        </Heading>
-        <Text>{address}</Text>
-        <Text>Ξ {balance}</Text>
+      <Grid columns={['1fr', '1fr 1fr']} sx={{ overflow: 'hidden', gap: '0 20px' }}>
+        <Box>
+          <Heading as="h4" sx={{ color: 'green' }}>
+            Address
+          </Heading>
+          <Text>{address}</Text>
+        </Box>
+        <Box>
+          <Heading as="h4" sx={{ color: 'green' }}>
+            Balance
+          </Heading>
+          <Text>Ξ {balance}</Text>
+        </Box>
       </Grid>
       <Divider variant="divider.nft" sx={{ my: 7 }} />
       <Box my={5}>
@@ -104,7 +108,7 @@ const Profile = () => {
                 ({ownedTokens.length} item)
               </Text>
             </Heading>
-            <Grid gap={4} columns="1fr 1fr 1fr">
+            <Grid gap={4} columns={['1fr 1fr', '1fr 1fr 1fr']}>
               {ownedTokens.map((t, index) => (
                 <Token
                   isOnSale={

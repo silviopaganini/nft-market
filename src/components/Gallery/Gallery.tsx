@@ -50,7 +50,7 @@ const Gallery = () => {
   return (
     <Box>
       <Heading as="h1">Market</Heading>
-      <Grid gap={4} columns="1fr 1fr 1fr 1fr">
+      <Grid gap={4} columns={['1fr 1fr', '1fr 1fr 1fr', '1fr 1fr 1fr 1fr']}>
         {tokensOnSale?.map((i, index) => (
           <Token onBuy={onBuyTokenClick} token={i} key={index} />
         ))}

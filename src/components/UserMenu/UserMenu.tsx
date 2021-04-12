@@ -20,7 +20,7 @@ const UserMenu = () => {
     <Flex sx={{ ml: 'auto', justifySelf: 'flex-end' }}>
       {isAuthenticated && user && (
         <>
-          <Box>
+          <Box sx={{ display: ['none', 'block'] }}>
             <Heading sx={{ p: 0, color: 'white' }} as="h4">
               {toShort(user.address)}
             </Heading>
@@ -35,7 +35,7 @@ const UserMenu = () => {
             }}
             sx={{
               cursor: 'pointer',
-              ml: 3,
+              ml: [0, 3],
               height: 30,
               width: 30,
               borderRadius: '100%',
