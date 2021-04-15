@@ -28,8 +28,6 @@ export const reducer = (state: StateContext, action: Action) => {
     case ActionType.UPDATE_USER:
       return { ...state, isAuthenticated: true, user: action.payload }
     case ActionType.SIGN_OUT:
-      console.log('asdasdasd')
-
       return { ...state, isAuthenticated: false, user: undefined }
 
     case ActionType.LOAD_TOKEN_SALE:

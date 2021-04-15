@@ -42,7 +42,7 @@
   "scripts": {
     "postinstall": "husky install",
     "start": "react-scripts start",
-    "build": "rm -rf docs && react-scripts build && mv build/ docs/ ",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "prettier --write './**/*.{js,jsx,ts,tsx}'",
