@@ -29,6 +29,10 @@ See [my portfolio](https://s2paganini.com/case/ckm0zl44o0w1i0a54lryryi1d) for mo
 
 <hr />
 
+## ETH-USD Service
+
+It's been transferred to the [NFT Lambda Service](https://github.com/silviopaganini/nft-market-service) repository.
+
 ## ⚡️ Tech-Stack
 
 - Typescript
@@ -49,7 +53,6 @@ See [my portfolio](https://s2paganini.com/case/ckm0zl44o0w1i0a54lryryi1d) for mo
 ```
 NODE_ENV=development
 BROWSER=chrome
-REACT_APP_APIETHERSCAN=
 REACT_APP_SERVICE_URL=http://localhost:4000/dev
 REACT_APP_RPC_URL_1=http://0.0.0.0:7545
 REACT_APP_RPC_URL_4=https://rinkeby.infura.io/v3/INFURA_KEY
