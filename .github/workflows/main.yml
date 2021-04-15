@@ -1,5 +1,12 @@
 name: Build and Deploy
 on: [push]
+
+env:
+    REACT_APP_SERVICE_URL: ${REACT_APP_SERVICE_URL}
+    REACT_APP_APIETHERSCAN: ${REACT_APP_APIETHERSCAN}
+    REACT_APP_RPC_URL_1: ${REACT_APP_RPC_URL_1}
+    REACT_APP_RPC_URL_4: ${REACT_APP_RPC_URL_4}
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
