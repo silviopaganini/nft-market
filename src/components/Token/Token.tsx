@@ -82,7 +82,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
     }
   }
 
-  const { data } = useSWR(`${METADATA_API}/token?id=${token.id}`, fetcherMetadata)
+  const { data } = useSWR(`${METADATA_API}/token/${token.id}`, fetcherMetadata)
 
   const tokenPriceEth = new Intl.NumberFormat('us-GB', {
     style: 'currency',
