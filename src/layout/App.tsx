@@ -26,6 +26,7 @@ const App = () => {
               return (
                 <Button
                   mt={2}
+                  mr={2}
                   variant="connect"
                   sx={{
                     borderColor: activating ? 'orange' : connected ? 'green' : 'unset',

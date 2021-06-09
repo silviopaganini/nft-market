@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 import { BigNumber } from 'ethers'
 import Token from './Token'
 
-test(`Renders ${name}`, () => {
+test(`Renders Token`, () => {
   render(
     <Token
       token={{
