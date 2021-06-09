@@ -1,24 +1,35 @@
 import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 
-import { injected } from '../connectors'
+import { injected, walletconnect } from '../connectors'
+import { URI_AVAILABLE } from '@web3-react/walletconnect-connector'
 
 export function useEagerConnect() {
-  const { activate, active } = useWeb3React()
+  const { activate, active, connector } = useWeb3React()
 
   const [tried, setTried] = useState(false)
 
   useEffect(() => {
-    injected.isAuthorized().then((isAuthorized: boolean) => {
-      if (isAuthorized) {
-        activate(injected, undefined, true).catch(() => {
+    console.log(connector)
+
+    if (connector === walletconnect) {
+      walletconnect.on(URI_AVAILABLE, uri => {
+        console.log(uri)
+      })
+    }
+
+    if (connector === injected) {
+      injected.isAuthorized().then((isAuthorized: boolean) => {
+        if (isAuthorized) {
+          activate(injected, undefined, true).catch(() => {
+            setTried(true)
+          })
+        } else {
           setTried(true)
-        })
-      } else {
-        setTried(true)
-      }
-    })
-  }, [activate])
+        }
+      })
+    }
+  }, [activate, connector])
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
