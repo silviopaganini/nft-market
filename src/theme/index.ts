@@ -53,8 +53,7 @@ export default {
   space: [0, 4, 10, 16, 20, 30, 42, 56, 78, 125, 150],
   fontSizes: [10, 12, 16, 26, 36, 50, 75],
   fonts: {
-    body:
-      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+    body: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     heading: 'inherit',
   },
   layout: {
@@ -86,8 +85,18 @@ export default {
       },
       transition: 'all .2s ease-out',
       '&:hover': {
-        filter: 'brightness(1.2)',
+        opacity: 1,
         color: 'green',
+      },
+    },
+    owner: {
+      color: 'white',
+      fontSize: 1,
+      opacity: 0.5,
+      transition: 'all .2s ease-out',
+      '&:hover': {
+        opacity: 1,
+        color: 'white',
       },
     },
   },
