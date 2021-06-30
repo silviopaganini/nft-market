@@ -36,6 +36,7 @@ const Gallery = () => {
 
   const loadTokensForSale = useCallback(async () => {
     if (!dispatch || !contract?.payload) return
+
     updateTokensOnSale({ dispatch, contract: contract.payload })
   }, [dispatch, contract])
 
