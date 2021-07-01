@@ -24,20 +24,27 @@ jobs:
           REACT_APP_RPC_URL_4: ${{ secrets.REACT_APP_RPC_URL_4 }}
         run: SKIP_PREFLIGHT_CHECK=true yarn build
 
-      - name: Archive production artifacts
+      - name: 💾 Create artifact
+        run: tar -zcvf build.tar.gz build/
+
+      - name: 📦 Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
           name: nft-marketplace-build
-          path: build
+          path: build.tar.gz
   deploy:
     runs-on: ubuntu-latest
     needs: [build]
     if: success() && github.ref == 'refs/heads/master'
     steps: 
-      - name: Download artifacts
+      - name: 📥 Download artifacts
         uses: actions/download-artifact@v2
         with:
           name: nft-marketplace-build
+
+      - name: 🔥 Unpack artifact 
+        run: tar -zxvf build.tar.gz
+
       - name: 🚀 Deploy 
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
