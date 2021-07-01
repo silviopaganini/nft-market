@@ -11,7 +11,7 @@ jobs:
       - name: ⚡️ Install
         run: yarn install
 
-      - name: 🔧 Install and Build 
+      - name: 🔧 Build 
         env:
           REACT_APP_SERVICE_URL: ${{ secrets.REACT_APP_SERVICE_URL }}
           REACT_APP_RPC_URL_1: ${{ secrets.REACT_APP_RPC_URL_1 }}
