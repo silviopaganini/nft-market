@@ -4,7 +4,12 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { Gallery } from '../components'
 import { ActionType, useStateContext } from '../state'
-import { connectorsByName } from '../connectors'
+import { ConnectorNames, connectorsByName } from '../connectors'
+
+const iconsMap = {
+  [ConnectorNames.Metamask]: 'https://docs.metamask.io/metamask-fox.svg',
+  [ConnectorNames.WalletConnect]: 'https://walletconnect.org/walletconnect-logo.svg',
+}
 
 const App = () => {
   const {
@@ -26,6 +31,7 @@ const App = () => {
               return (
                 <Button
                   mt={2}
+                  mr={2}
                   variant="connect"
                   sx={{
                     borderColor: activating ? 'orange' : connected ? 'green' : 'unset',
@@ -40,13 +46,14 @@ const App = () => {
                     )
                   }}
                 >
-                  {currentConnector === connectorsByName.Metamask && (
+                  {iconsMap[name as keyof typeof connectorsByName] && (
                     <Image
                       sx={{ width: 35, height: 35 }}
                       mr={3}
-                      src="https://docs.metamask.io/metamask-fox.svg"
+                      src={iconsMap[name as keyof typeof connectorsByName]}
                     />
                   )}
+
                   {name}
                   {activating && <Spinner size={20} color="white" sx={{ ml: 3 }} />}
                 </Button>
