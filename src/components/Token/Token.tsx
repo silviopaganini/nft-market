@@ -1,4 +1,4 @@
-import { FormEvent, MouseEvent, useState } from 'react'
+import { FormEvent, MouseEvent, useState, useEffect } from 'react'
 import { utils, BigNumber, constants } from 'ethers'
 import {
   Spinner,
@@ -46,6 +46,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
   const [onSaleActive, setOnSale] = useState<boolean>(false)
   const [address, setAddress] = useState<string>('')
   const [price, setPrice] = useState<string>('')
+  const [owner, setOwner] = useState<string>('')
   const {
     state: { user, ethPrice, contract },
   } = useStateContext()
@@ -82,6 +83,19 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
     }
   }
 
+  useEffect(() => {
+    const loadOwner = async () => {
+      try {
+        const owner = await contract?.payload.ownerOf(token.id)
+        setOwner(owner)
+      } catch (e) {
+        throw new Error(e)
+      }
+    }
+
+    loadOwner()
+  }, [contract, token.id])
+
   const { data } = useSWR(`${METADATA_API}/token/${token.id}`, fetcherMetadata)
 
   const tokenPriceEth = new Intl.NumberFormat('us-GB', {
@@ -113,13 +127,33 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
               ({tokenPriceEth})
             </Text>
           </Heading>
-          <NavLink
-            target="_blank"
-            href={`https://testnets.opensea.io/assets/${contract?.details.address}/${token.id}`}
-            variant="openSea"
-          >
-            View on Opensea.io
-          </NavLink>
+          <Box mt={2}>
+            <Text as="p" sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>
+              Owner
+            </Text>
+            <NavLink
+              target="_blank"
+              href={`https://rinkeby.etherscan.io/address/${owner}`}
+              variant="owner"
+              style={{
+                textOverflow: 'ellipsis',
+                width: '100%',
+                position: 'relative',
+                overflow: 'hidden',
+              }}
+            >
+              {owner}
+            </NavLink>
+          </Box>
+          <Box mt={2}>
+            <NavLink
+              target="_blank"
+              href={`https://testnets.opensea.io/assets/${contract?.details.address}/${token.id}`}
+              variant="openSea"
+            >
+              View on Opensea.io
+            </NavLink>
+          </Box>
         </Box>
 
         {onTransfer && (

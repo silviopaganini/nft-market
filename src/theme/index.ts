@@ -85,8 +85,18 @@ export default {
       },
       transition: 'all .2s ease-out',
       '&:hover': {
-        filter: 'brightness(1.2)',
+        opacity: 1,
         color: 'green',
+      },
+    },
+    owner: {
+      color: 'white',
+      fontSize: 1,
+      opacity: 0.5,
+      transition: 'all .2s ease-out',
+      '&:hover': {
+        opacity: 1,
+        color: 'white',
       },
     },
   },

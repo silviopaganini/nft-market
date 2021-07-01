@@ -51,8 +51,6 @@ const Connect: FC = ({ children }) => {
     const update = async () => {
       try {
         const contract = await getContract({ dispatch, library, chainId })
-        console.log(contract)
-
         await updateUser({ contract, userAccount: account, library, dispatch })
       } catch (e) {
         console.log(e)
