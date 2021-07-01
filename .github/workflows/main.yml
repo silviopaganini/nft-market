@@ -2,7 +2,7 @@ name: Build and Deploy
 on: [push]
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name:  🛎️ Checkout
@@ -17,7 +17,11 @@ jobs:
           REACT_APP_RPC_URL_1: ${{ secrets.REACT_APP_RPC_URL_1 }}
           REACT_APP_RPC_URL_4: ${{ secrets.REACT_APP_RPC_URL_4 }}
         run: SKIP_PREFLIGHT_CHECK=true yarn build
-
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/master'
+    steps: 
       - name: 🚀 Deploy 
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
