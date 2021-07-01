@@ -1,17 +1,19 @@
 import { useWeb3React } from '@web3-react/core'
-import { BigNumber } from 'ethers'
-import { useCallback, useEffect } from 'react'
-import { Box, Grid, Heading } from 'theme-ui'
+import { BigNumber, utils } from 'ethers'
+import { useCallback, useEffect, useState } from 'react'
+import { Box, Button, Flex, Grid, Heading } from 'theme-ui'
 import { updateTokensOnSale, updateUser } from '../../actions'
 import { useStateContext } from '../../state'
 import { Token } from '..'
 
 export type GalleryProps = {}
+type StateOrder = 'price' | 'alpha'
 
 const Gallery = () => {
   const { state, dispatch } = useStateContext()
   const { library } = useWeb3React()
   const { contract, user, tokensOnSale } = state
+  const [order, setOrder] = useState<StateOrder>('alpha')
 
   const onConfirmTransfer = async () => {
     if (!user || !user.address) return
@@ -50,11 +52,37 @@ const Gallery = () => {
 
   return (
     <Box>
-      <Heading as="h1">Market</Heading>
+      <Heading as="h1">Marketplace</Heading>
+      <Flex sx={{ alignItems: 'center' }} mb={3}>
+        <Heading as="h3" sx={{ color: 'lightGray' }}>
+          Order:
+        </Heading>
+        <Flex ml={3}>
+          <Button
+            mr={2}
+            onClick={() => setOrder('alpha')}
+            variant="filter"
+            disabled={order === 'alpha'}
+          >
+            Alphabetically
+          </Button>
+          <Button onClick={() => setOrder('price')} variant="filter" disabled={order === 'price'}>
+            Price
+          </Button>
+        </Flex>
+      </Flex>
       <Grid gap={4} columns={['1fr 1fr', '1fr 1fr', '1fr 1fr 1fr']}>
-        {tokensOnSale?.map((i, index) => (
-          <Token onBuy={onBuyTokenClick} token={i} key={index} />
-        ))}
+        {tokensOnSale
+          ?.sort((a, b) =>
+            order === 'alpha'
+              ? BigNumber.from(a.id)
+                  .toString()
+                  .localeCompare(BigNumber.from(b.id).toString(), undefined, { numeric: true })
+              : Number(utils.formatEther(a.price.sub(b.price)))
+          )
+          .map((i, index) => (
+            <Token onBuy={onBuyTokenClick} token={i} key={index} />
+          ))}
       </Grid>
     </Box>
   )

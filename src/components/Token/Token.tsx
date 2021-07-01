@@ -16,7 +16,7 @@ import {
 import useSWR from 'swr'
 import { useStateContext } from '../../state'
 import { fetcherMetadata } from '../../utils/fetchers'
-import { METADATA_API } from '../../utils'
+import { METADATA_API, toShort } from '../../utils'
 
 export type TokenProps = {
   id: string
@@ -142,7 +142,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
                 overflow: 'hidden',
               }}
             >
-              {owner}
+              {toShort(owner)}
             </NavLink>
           </Box>
           <Box mt={2}>

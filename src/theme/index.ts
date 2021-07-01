@@ -25,11 +25,12 @@ export const Palette = {
   secondary: '#333',
   gray: '#F7F9FA',
   lightGray: '#e0e0e0',
-  midGray: '#333',
+  midGray: '#222',
   lightBlue: '#EFF7FF',
   navy: '#e0e0e0',
   green: 'rgb(99, 255, 203)',
   amber: '#D58408',
+  lightGreen: '#AEC',
   red: '#999',
   muted: '#999',
   transparent: 'transparent',
@@ -75,6 +76,15 @@ export default {
     },
   },
   links: {
+    nav: {
+      color: 'white',
+      cursor: 'pointer',
+      transition: 'all .2s ease-out',
+      '&:hover': {
+        opacity: 0.5,
+        color: 'white',
+      },
+    },
     openSea: {
       color: 'green',
       fontSize: 1,
@@ -97,6 +107,10 @@ export default {
       '&:hover': {
         opacity: 1,
         color: 'white',
+      },
+      '&:after': {
+        content: `url("data:image/svg+xml,%3Csvg width='8' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.262 0l2.529 2.524L0 6.314 1.685 8l3.79-3.79L8 6.732V0z' fill='white' fill-rule='nonzero' /%3E%3C/svg%3E")`,
+        ml: 1,
       },
     },
   },
@@ -131,6 +145,18 @@ export default {
       color: 'black',
       minWidth: 'auto',
       py: 2,
+    },
+    filter: {
+      variant: 'buttons.tertiary',
+      bg: 'lightGreen',
+      color: 'black',
+      minWidth: 'auto',
+      py: 1,
+      fontSize: 1,
+      '&:disabled': {
+        pointerEvents: 'none',
+        opacity: 0.5,
+      },
     },
     connect: {
       variant: 'buttons.tertiary',
