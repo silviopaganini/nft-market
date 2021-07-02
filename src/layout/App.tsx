@@ -2,7 +2,7 @@ import { Container, Flex, Button, Spinner, Image } from 'theme-ui'
 import { useWeb3React } from '@web3-react/core'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
-import { Gallery } from '../components'
+import { Gallery, TransactionProgress } from '../components'
 import { ActionType, useStateContext } from '../state'
 import { ConnectorNames, connectorsByName } from '../connectors'
 
@@ -16,11 +16,11 @@ const App = () => {
     dispatch,
     state: { user, activatingConnector },
   } = useStateContext()
-  const { connector, activate } = useWeb3React()
+  const { connector, activate, active } = useWeb3React()
 
   return (
     <Container>
-      {!user ? (
+      {!user && (
         <>
           <Flex sx={{ justifyContent: 'center' }}>
             {Object.keys(connectorsByName).map((name: string) => {
@@ -61,8 +61,13 @@ const App = () => {
             })}
           </Flex>
         </>
-      ) : (
-        <Gallery />
+      )}
+
+      {user && active && (
+        <>
+          <Gallery />
+          <TransactionProgress />
+        </>
       )}
     </Container>
   )

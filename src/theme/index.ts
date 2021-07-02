@@ -74,6 +74,14 @@ export default {
       borderColor: 'muted',
       textAlign: 'left',
     },
+    transaction: {
+      bg: 'amber',
+      position: 'fixed',
+      top: 100,
+      right: 20,
+      p: 4,
+      borderRadius: 10,
+    },
   },
   links: {
     nav: {

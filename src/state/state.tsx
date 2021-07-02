@@ -11,6 +11,7 @@ export interface StateContext {
   tokensOnSale?: TokenProps[]
   ethPrice?: string
   activatingConnector?: any
+  transaction?: any
 }
 export interface Store {
   state: StateContext

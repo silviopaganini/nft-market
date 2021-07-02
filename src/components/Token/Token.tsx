@@ -89,7 +89,8 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
         const owner = await contract?.payload.ownerOf(token.id)
         setOwner(owner)
       } catch (e) {
-        throw new Error(e)
+        // throw new Error(e)
+        console.error(e)
       }
     }
 

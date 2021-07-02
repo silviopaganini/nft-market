@@ -9,6 +9,7 @@ export enum ActionType {
   LOAD_TOKEN_SALE = 'Load tokens on Sale',
   ETH_PRICE = 'Eth price',
   SET_CONNECTOR = 'Set Connector',
+  SET_TRANSACTION = 'Set Transaction',
 }
 
 export type Action =
@@ -17,6 +18,7 @@ export type Action =
   | { type: ActionType.UPDATE_USER; payload: UserProps }
   | { type: ActionType.SIGN_OUT; payload?: any }
   | { type: ActionType.SET_CONNECTOR; payload?: any }
+  | { type: ActionType.SET_TRANSACTION; payload?: any }
   | { type: ActionType.LOAD_TOKEN_SALE; payload?: TokenProps[] }
 
 export const reducer = (state: StateContext, action: Action) => {
@@ -35,6 +37,9 @@ export const reducer = (state: StateContext, action: Action) => {
 
     case ActionType.CONTRACT:
       return { ...state, contract: action.payload }
+
+    case ActionType.SET_TRANSACTION:
+      return { ...state, transaction: action.payload }
 
     default:
       throw new Error('Not among actions')

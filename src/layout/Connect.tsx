@@ -37,7 +37,7 @@ const Connect: FC = ({ children }) => {
     dispatch,
     state: { activatingConnector },
   } = useStateContext()
-  const { connector, library, chainId, account, error } = useWeb3React()
+  const { library, chainId, account, error } = useWeb3React()
 
   const { data: ethPrice } = useSWR(ETHSCAN_API, fetcherETHUSD)
 
@@ -59,14 +59,6 @@ const Connect: FC = ({ children }) => {
 
     update()
   }, [chainId, account, library, dispatch])
-
-  useEffect(() => {
-    // console.log(activatingConnector, connector)
-
-    if (activatingConnector && activatingConnector === connector) {
-      dispatch({ type: ActionType.SET_CONNECTOR, payload: undefined })
-    }
-  }, [activatingConnector, connector, dispatch])
 
   const triedEager = useEagerConnect()
   useInactiveListener(!triedEager || !!activatingConnector)
