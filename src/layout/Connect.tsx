@@ -61,7 +61,7 @@ const Connect: FC = ({ children }) => {
   }, [chainId, account, library, dispatch])
 
   useEffect(() => {
-    console.log(activatingConnector, connector)
+    // console.log(activatingConnector, connector)
 
     if (activatingConnector && activatingConnector === connector) {
       dispatch({ type: ActionType.SET_CONNECTOR, payload: undefined })
