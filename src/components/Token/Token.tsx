@@ -96,19 +96,21 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
     loadOwner()
   }, [contract, token.id])
 
-  const { data } = useSWR(`${METADATA_API}/token/${token.id}`, fetcherMetadata)
+  const { data, error } = useSWR(`${METADATA_API}/token/${token.id}`, fetcherMetadata)
 
   const tokenPriceEth = new Intl.NumberFormat('us-GB', {
     style: 'currency',
     currency: 'USD',
   }).format(Number(utils.formatEther(token.price)) * Number(ethPrice))
 
-  if (!data)
+  if (!data || !error)
     return (
       <Card variant="nft">
         <Spinner />
       </Card>
     )
+
+  if (error) return null
 
   return (
     <Card variant="nft">
