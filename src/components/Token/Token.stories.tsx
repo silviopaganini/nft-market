@@ -1,7 +1,7 @@
 import { Story, Meta } from '@storybook/react/types-6-0'
 import { BigNumber } from 'ethers'
 
-import Token, { TokenCompProps } from './Token'
+import { Token, TokenCompProps } from './Token'
 
 export default {
   title: 'Components/Token',
@@ -21,9 +21,4 @@ Default.args = {
     price: BigNumber.from(1),
     name: 'Token 1',
   },
-  onTransfer: async () => {
-    return true
-  },
-  onBuy: undefined,
-  onSale: undefined,
 } as TokenCompProps

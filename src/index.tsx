@@ -5,7 +5,6 @@ import * as Sentry from '@sentry/react'
 import { Integrations } from '@sentry/tracing'
 import reportWebVitals from './reportWebVitals'
 import { Root } from './layout'
-import { StateProvider } from './state/state'
 import theme from './theme'
 
 Sentry.init({
@@ -21,9 +20,7 @@ Sentry.init({
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <StateProvider>
-        <Root />
-      </StateProvider>
+      <Root />
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

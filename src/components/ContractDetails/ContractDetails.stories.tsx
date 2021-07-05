@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react/types-6-0'
 
-import ContractDetails, { ContractDetailsProps } from './ContractDetails'
+import { ContractDetails, ContractDetailsProps } from './ContractDetails'
 
 export default {
   title: 'Views/ContractDetails',

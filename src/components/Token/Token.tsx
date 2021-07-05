@@ -14,9 +14,10 @@ import {
   NavLink,
 } from 'theme-ui'
 import useSWR from 'swr'
-import { useStateContext } from '../../state'
+import { useAppState } from '../../state'
 import { fetcherMetadata } from '../../utils/fetchers'
 import { METADATA_API, toShort } from '../../utils'
+import { useWeb3React } from '@web3-react/core'
 
 export type TokenProps = {
   id: string
@@ -28,17 +29,9 @@ export type TokenProps = {
 export type TokenCompProps = {
   token: TokenProps
   isOnSale?: boolean
-  onTransfer?({ id, address }: { id: string; address: string }): Promise<boolean>
-  onBuy?({ id, price }: { id: string; price: BigNumber }): void
-  onSale?({
-    id,
-    price,
-    onSale,
-  }: {
-    id: string
-    price: BigNumber
-    onSale?: boolean
-  }): Promise<boolean>
+  onTransfer?: boolean
+  onBuy?: boolean
+  onSale?: boolean
 }
 
 const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) => {
@@ -48,17 +41,22 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
   const [price, setPrice] = useState<string>('')
   const [owner, setOwner] = useState<string>('')
   const {
-    state: { user, ethPrice, contract },
-  } = useStateContext()
+    user,
+    ethPrice,
+    contract,
+    updateTokensOnSale,
+    setUser,
+    transferToken,
+    buyToken,
+    setTokenSale,
+  } = useAppState()
+  const { library } = useWeb3React()
 
   const onTransferClick = async (e: FormEvent | MouseEvent) => {
     e.preventDefault()
     try {
       if (utils.isAddress(address) && onTransfer) {
-        const result = await onTransfer({ id: token.id, address })
-        if (result) {
-          setOnSale(false)
-        }
+        await transferToken(token.id, address)
       }
     } catch (e) {
       throw new Error(e)
@@ -67,17 +65,16 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
 
   const onBuyClick = (e: MouseEvent) => {
     e.preventDefault()
-    onBuy && onBuy({ id: token.id, price: token.price })
+    onBuy && buyToken(token.id, token.price)
   }
 
   const onSaleClick = async (e: MouseEvent) => {
     e.preventDefault()
     if (!onSale) return
     try {
-      const result = await onSale({ id: token.id, price: utils.parseEther(price), onSale: true })
-      if (result) {
-        setOnSale(false)
-      }
+      await setTokenSale(token.id, utils.parseEther(price), true)
+      await updateTokensOnSale()
+      await setUser(library)
     } catch (e) {
       throw new Error(e)
     }
@@ -223,14 +220,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
                 {isOnSale ? (
                   <Button
                     mt={2}
-                    onClick={() =>
-                      onSale &&
-                      onSale({
-                        id: token.id,
-                        price: token.price,
-                        onSale: false,
-                      })
-                    }
+                    onClick={() => onSale && setTokenSale(token.id, token.price, false)}
                     variant="tertiary"
                   >
                     Remove from Sale
@@ -271,4 +261,4 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
   )
 }
 
-export default Token
+export { Token }

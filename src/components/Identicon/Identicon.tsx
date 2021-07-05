@@ -30,4 +30,4 @@ const Identicon = ({ address, size = 16 }: IdenticonProps) => {
   )
 }
 
-export default Identicon
+export { Identicon }

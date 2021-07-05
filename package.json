@@ -39,7 +39,8 @@
     "swr": "^0.5.6",
     "theme-ui": "^0.10.0",
     "typescript": "^4.3.4",
-    "web-vitals": "^2.0.1"
+    "web-vitals": "^2.0.1",
+    "zustand": "^3.5.5"
   },
   "scripts": {
     "postinstall": "husky install",

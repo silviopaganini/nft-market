@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react/types-6-0'
 
-import Profile, { ProfileProps } from './Profile'
+import { Profile, ProfileProps } from './Profile'
 
 export default {
   title: 'Views/Profile',

@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react/types-6-0'
 
-import MetamaskLogin, { MetamaskLoginProps } from './MetamaskLogin'
+import {MetamaskLogin, MetamaskLoginProps } from './MetamaskLogin'
 
 export default {
   title: 'Views/MetamaskLogin',

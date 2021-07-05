@@ -1,7 +1,7 @@
 import { ElementType } from 'react'
 import { Redirect } from 'react-router'
 import { Route } from 'react-router-dom'
-import { useStateContext } from '../../state'
+import { useAppState } from '../../state'
 
 type PrivateRouteProps = {
   component: ElementType
@@ -9,9 +9,7 @@ type PrivateRouteProps = {
 }
 
 const PrivateRoute = ({ component: Component, path }: PrivateRouteProps) => {
-  const {
-    state: { isAuthenticated },
-  } = useStateContext()
+  const { isAuthenticated } = useAppState()
 
   return (
     <Route
@@ -21,4 +19,4 @@ const PrivateRoute = ({ component: Component, path }: PrivateRouteProps) => {
   )
 }
 
-export default PrivateRoute
+export { PrivateRoute }

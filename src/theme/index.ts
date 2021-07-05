@@ -77,7 +77,7 @@ export default {
     transaction: {
       bg: 'amber',
       position: 'fixed',
-      top: 100,
+      top: 50,
       right: 20,
       p: 4,
       borderRadius: 10,

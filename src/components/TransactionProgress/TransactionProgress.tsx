@@ -1,15 +1,11 @@
 import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
 import { Card, Flex, Spinner } from 'theme-ui'
-import { updateUser } from '../../actions'
-import { ActionType, useStateContext } from '../../state'
+import { useAppState } from '../../state'
 import { toShort } from '../../utils'
 
 const TransactionProgress = () => {
-  const {
-    dispatch,
-    state: { transaction, user, contract },
-  } = useStateContext()
+  const { transaction, user, setTransaction, setUser, updateTokensOnSale } = useAppState()
 
   const { library } = useWeb3React()
 
@@ -19,21 +15,18 @@ const TransactionProgress = () => {
 
       const receipt = await transaction.wait()
       if (receipt.confirmations >= 1) {
-        await updateUser({
-          contract: contract?.payload,
-          userAccount: user.address,
-          library,
-          dispatch,
-        })
-
-        dispatch({ type: ActionType.SET_TRANSACTION, payload: undefined })
+        await setUser(library)
+        setTransaction(undefined)
+        updateTokensOnSale()
       } else {
         throw new Error(receipt)
       }
     }
 
     loadTransaction()
-  }, [dispatch, library, transaction, contract, user])
+  }, [transaction, library, user, setTransaction, setUser, updateTokensOnSale])
+
+  console.log('asdasdasd', transaction)
 
   if (!transaction) return null
 
@@ -46,4 +39,4 @@ const TransactionProgress = () => {
   )
 }
 
-export default TransactionProgress
+export { TransactionProgress }

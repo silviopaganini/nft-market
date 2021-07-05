@@ -8,11 +8,10 @@ import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } fro
 import { FC, useEffect } from 'react'
 import { Text, Container, Heading } from 'theme-ui'
 import useSWR from 'swr'
-import { getContract, updateUser } from '../actions'
 import { useEagerConnect, useInactiveListener } from '../hooks/web3'
-import { ActionType, useStateContext } from '../state'
 import { ETHSCAN_API } from '../utils'
 import { fetcherETHUSD } from '../utils/fetchers'
+import { useAppState } from '../state'
 
 function getErrorMessage(error: Error) {
   console.log(error)
@@ -33,32 +32,29 @@ function getErrorMessage(error: Error) {
 }
 
 const Connect: FC = ({ children }) => {
-  const {
-    dispatch,
-    state: { activatingConnector },
-  } = useStateContext()
+  const { activatingConnector, setEthPrice, setContract, setUser } = useAppState()
   const { library, chainId, account, error } = useWeb3React()
 
   const { data: ethPrice } = useSWR(ETHSCAN_API, fetcherETHUSD)
 
   useEffect(() => {
-    dispatch({ type: ActionType.ETH_PRICE, payload: ethPrice })
-  }, [ethPrice, dispatch])
+    setEthPrice(ethPrice)
+  }, [ethPrice, setEthPrice])
 
   useEffect(() => {
     if (!chainId || !account || !library) return
 
     const update = async () => {
       try {
-        const contract = await getContract({ dispatch, library, chainId })
-        await updateUser({ contract, userAccount: account, library, dispatch })
+        await setContract(library, chainId)
+        await setUser(library, account)
       } catch (e) {
         console.log(e)
       }
     }
 
     update()
-  }, [chainId, account, library, dispatch])
+  }, [chainId, account, library, setContract, setUser])
 
   const triedEager = useEagerConnect()
   useInactiveListener(!triedEager || !!activatingConnector)
