@@ -1,6 +1,5 @@
 export * from './Token'
 export * from './Header'
-export * from './Profile'
 export * from './Gallery'
 export * from './ContractDetails'
 export * from './MetamaskLogin'

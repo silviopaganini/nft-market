@@ -6,7 +6,7 @@ import {
 import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } from '@web3-react/walletconnect-connector'
 
 import { FC, useEffect } from 'react'
-import { Text, Container, Heading } from 'theme-ui'
+import { Text, Heading } from 'theme-ui'
 import useSWR from 'swr'
 import { useEagerConnect, useInactiveListener } from '../hooks/web3'
 import { ETHSCAN_API } from '../utils'
@@ -32,14 +32,10 @@ function getErrorMessage(error: Error) {
 }
 
 const Connect: FC = ({ children }) => {
-  const { activatingConnector, setEthPrice, setContract, setUser } = useAppState()
+  const { activatingConnector, setContract, setUser } = useAppState()
   const { library, chainId, account, error } = useWeb3React()
 
-  const { data: ethPrice } = useSWR(ETHSCAN_API, fetcherETHUSD)
-
-  useEffect(() => {
-    setEthPrice(ethPrice)
-  }, [ethPrice, setEthPrice])
+  useSWR(ETHSCAN_API, fetcherETHUSD)
 
   useEffect(() => {
     if (!chainId || !account || !library) return
@@ -47,7 +43,7 @@ const Connect: FC = ({ children }) => {
     const update = async () => {
       try {
         await setContract(library, chainId)
-        await setUser(library, account)
+        setUser(account)
       } catch (e) {
         console.log(e)
       }
@@ -62,10 +58,10 @@ const Connect: FC = ({ children }) => {
   return (
     <>
       {error ? (
-        <Container>
+        <>
           <Heading as="h2">❌ Something is not right</Heading>
           <Text sx={{ mt: 3 }}>{getErrorMessage(error)}</Text>
-        </Container>
+        </>
       ) : (
         children
       )}
@@ -73,4 +69,4 @@ const Connect: FC = ({ children }) => {
   )
 }
 
-export default Connect
+export { Connect }

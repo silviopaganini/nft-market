@@ -1,5 +1,5 @@
 import { BigNumber, utils } from 'ethers'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Box, Button, Flex, Grid, Heading } from 'theme-ui'
 import { useAppState } from '../../state'
 import { Token } from '..'
@@ -8,14 +8,16 @@ export type GalleryProps = {}
 type StateOrder = 'price' | 'alpha'
 
 const Gallery = () => {
-  const { user, tokensOnSale, updateTokensOnSale } = useAppState()
+  const { user, tokensOnSale } = useAppState()
+  const updateTokensOnSale = useAppState(
+    useCallback(({ updateTokensOnSale }) => updateTokensOnSale, [])
+  )
+
   const [order, setOrder] = useState<StateOrder>('alpha')
 
   useEffect(() => {
     updateTokensOnSale()
-  }, [updateTokensOnSale, user?.ownedTokens])
-
-  console.log(user?.ownedTokens)
+  }, [updateTokensOnSale])
 
   return (
     <Box>

@@ -1,39 +1,58 @@
-import { useWeb3React } from '@web3-react/core'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Card, Flex, Spinner } from 'theme-ui'
 import { useAppState } from '../../state'
 import { toShort } from '../../utils'
 
 const TransactionProgress = () => {
-  const { transaction, user, setTransaction, setUser, updateTokensOnSale } = useAppState()
+  const { setTransaction, setUser, updateTokensOnSale } = useAppState(
+    useCallback(
+      ({ setTransaction, setUser, updateTokensOnSale }) => ({
+        setTransaction,
+        setUser,
+        updateTokensOnSale,
+      }),
+      []
+    )
+  )
 
-  const { library } = useWeb3React()
+  const transactionRef = useRef(useAppState.getState().transaction)
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const update = useCallback(async () => {
+    await setUser()
+    setTransaction(undefined)
+    updateTokensOnSale()
+    setLoading(false)
+  }, [setTransaction, setUser, updateTokensOnSale])
 
   useEffect(() => {
-    const loadTransaction = async () => {
-      if (!user || !user.address || !transaction) return
-
-      const receipt = await transaction.wait()
-      if (receipt.confirmations >= 1) {
-        await setUser(library)
-        setTransaction(undefined)
-        updateTokensOnSale()
-      } else {
-        throw new Error(receipt)
+    useAppState.subscribe(async ({ transaction }) => {
+      try {
+        transactionRef.current = transaction
+        if (!transaction) return
+        setLoading(true)
+        const receipt = await transaction.wait()
+        if (receipt.confirmations >= 1) {
+          update()
+        }
+      } catch (e) {
+        console.log('transaction', e)
+        setLoading(false)
       }
+    })
+
+    return () => {
+      useAppState.destroy()
     }
+  }, [update])
 
-    loadTransaction()
-  }, [transaction, library, user, setTransaction, setUser, updateTokensOnSale])
-
-  console.log('asdasdasd', transaction)
-
-  if (!transaction) return null
+  if (!loading) return null
 
   return (
     <Card variant="transaction">
       <Flex sx={{ alignItems: 'center' }}>
-        <Spinner size={20} color="white" sx={{ mr: 2 }} /> Transaction: {toShort(transaction.hash)}
+        <Spinner size={20} color="white" sx={{ mr: 2 }} /> Transaction:{' '}
+        {toShort(transactionRef.current.hash)}
       </Flex>
     </Card>
   )

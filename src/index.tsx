@@ -10,6 +10,7 @@ import theme from './theme'
 Sentry.init({
   dsn: 'https://06951a956c7a4a6db2f776b1bc697efd@o72860.ingest.sentry.io/5842491',
   integrations: [new Integrations.BrowserTracing()],
+  enabled: process.env.NODE_ENV !== 'development',
 
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for performance monitoring.

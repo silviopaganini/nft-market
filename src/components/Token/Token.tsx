@@ -1,4 +1,4 @@
-import { FormEvent, MouseEvent, useState, useEffect } from 'react'
+import { FormEvent, MouseEvent, useState } from 'react'
 import { utils, BigNumber, constants } from 'ethers'
 import {
   Spinner,
@@ -15,9 +15,8 @@ import {
 } from 'theme-ui'
 import useSWR from 'swr'
 import { useAppState } from '../../state'
-import { fetcherMetadata } from '../../utils/fetchers'
-import { METADATA_API, toShort } from '../../utils'
-import { useWeb3React } from '@web3-react/core'
+import { fetcherMetadata, fetchOwner } from '../../utils/fetchers'
+import { formatPriceEth, METADATA_API, toShort } from '../../utils'
 
 export type TokenProps = {
   id: string
@@ -39,27 +38,13 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
   const [onSaleActive, setOnSale] = useState<boolean>(false)
   const [address, setAddress] = useState<string>('')
   const [price, setPrice] = useState<string>('')
-  const [owner, setOwner] = useState<string>('')
-  const {
-    user,
-    ethPrice,
-    contract,
-    updateTokensOnSale,
-    setUser,
-    transferToken,
-    buyToken,
-    setTokenSale,
-  } = useAppState()
-  const { library } = useWeb3React()
+  const { user, ethPrice, contractDetails, transferToken, buyToken, setTokenSale } = useAppState()
 
   const onTransferClick = async (e: FormEvent | MouseEvent) => {
     e.preventDefault()
-    try {
-      if (utils.isAddress(address) && onTransfer) {
-        await transferToken(token.id, address)
-      }
-    } catch (e) {
-      throw new Error(e)
+    if (onTransfer && utils.isAddress(address)) {
+      transferToken(token.id, address)
+      setTransfer(false)
     }
   }
 
@@ -73,33 +58,16 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
     if (!onSale) return
     try {
       await setTokenSale(token.id, utils.parseEther(price), true)
-      await updateTokensOnSale()
-      await setUser(library)
+      setOnSale(false)
     } catch (e) {
       throw new Error(e)
     }
   }
 
-  useEffect(() => {
-    const loadOwner = async () => {
-      try {
-        const owner = await contract?.payload.ownerOf(token.id)
-        setOwner(owner)
-      } catch (e) {
-        // throw new Error(e)
-        console.error(e)
-      }
-    }
-
-    loadOwner()
-  }, [contract, token.id])
-
+  const { data: owner } = useSWR(token.id, fetchOwner)
   const { data } = useSWR(`${METADATA_API}/token/${token.id}`, fetcherMetadata)
 
-  const tokenPriceEth = new Intl.NumberFormat('us-GB', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(Number(utils.formatEther(token.price)) * Number(ethPrice))
+  const tokenPriceEth = formatPriceEth(token.price, ethPrice)
 
   if (!data)
     return (
@@ -127,28 +95,30 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
               ({tokenPriceEth})
             </Text>
           </Heading>
+          {owner && !onTransfer && (
+            <Box mt={2}>
+              <Text as="p" sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>
+                Owner
+              </Text>
+              <NavLink
+                target="_blank"
+                href={`https://rinkeby.etherscan.io/address/${owner}`}
+                variant="owner"
+                style={{
+                  textOverflow: 'ellipsis',
+                  width: '100%',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                {toShort(owner)}
+              </NavLink>
+            </Box>
+          )}
           <Box mt={2}>
-            <Text as="p" sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>
-              Owner
-            </Text>
             <NavLink
               target="_blank"
-              href={`https://rinkeby.etherscan.io/address/${owner}`}
-              variant="owner"
-              style={{
-                textOverflow: 'ellipsis',
-                width: '100%',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              {toShort(owner)}
-            </NavLink>
-          </Box>
-          <Box mt={2}>
-            <NavLink
-              target="_blank"
-              href={`https://testnets.opensea.io/assets/${contract?.details.address}/${token.id}`}
+              href={`https://testnets.opensea.io/assets/${contractDetails?.address}/${token.id}`}
               variant="openSea"
             >
               View on Opensea.io

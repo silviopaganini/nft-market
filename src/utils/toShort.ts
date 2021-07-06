@@ -3,4 +3,4 @@ const toShort = (value: string, factor: number = 5) => {
   return `${value.substr(0, slice)}...${value.substr(value.length - slice, value.length)}`
 }
 
-export default toShort
+export { toShort }

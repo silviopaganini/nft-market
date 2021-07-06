@@ -22,6 +22,7 @@ jobs:
           REACT_APP_SERVICE_URL: ${{ secrets.REACT_APP_SERVICE_URL }}
           REACT_APP_RPC_URL_1: ${{ secrets.REACT_APP_RPC_URL_1 }}
           REACT_APP_RPC_URL_4: ${{ secrets.REACT_APP_RPC_URL_4 }}
+          NODE_ENV: production
         run: SKIP_PREFLIGHT_CHECK=true yarn build
 
       - name: 💾 Create artifact
