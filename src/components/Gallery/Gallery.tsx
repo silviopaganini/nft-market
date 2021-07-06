@@ -1,42 +1,23 @@
 import { BigNumber, utils } from 'ethers'
 import { useCallback, useEffect, useState } from 'react'
 import { Box, Button, Flex, Grid, Heading } from 'theme-ui'
-import { updateTokensOnSale } from '../../actions'
-import { ActionType, useStateContext } from '../../state'
+import { useAppState } from '../../state'
 import { Token } from '..'
 
 export type GalleryProps = {}
 type StateOrder = 'price' | 'alpha'
 
 const Gallery = () => {
-  const { state, dispatch } = useStateContext()
-  const { contract, user, tokensOnSale } = state
+  const { user, tokensOnSale } = useAppState()
+  const updateTokensOnSale = useAppState(
+    useCallback(({ updateTokensOnSale }) => updateTokensOnSale, [])
+  )
+
   const [order, setOrder] = useState<StateOrder>('alpha')
 
-  const onBuyToken = async ({ id, price }: { id: string; price: BigNumber }) => {
-    if (!contract?.payload) return
-
-    try {
-      const tx = await contract.payload.purchaseToken(id, { value: price })
-      dispatch({ type: ActionType.SET_TRANSACTION, payload: tx })
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  const loadTokensForSale = useCallback(async () => {
-    if (!dispatch || !contract?.payload) return
-
-    updateTokensOnSale({ dispatch, contract: contract.payload })
-  }, [dispatch, contract])
-
-  const onBuyTokenClick = ({ id, price }: { id: string; price: BigNumber }) => {
-    onBuyToken && onBuyToken({ id, price })
-  }
-
   useEffect(() => {
-    loadTokensForSale()
-  }, [loadTokensForSale, user?.ownedTokens])
+    updateTokensOnSale()
+  }, [updateTokensOnSale])
 
   return (
     <Box>
@@ -69,11 +50,11 @@ const Gallery = () => {
               : Number(utils.formatEther(a.price.sub(b.price)))
           )
           .map((i, index) => (
-            <Token onBuy={onBuyTokenClick} token={i} key={index} />
+            <Token onBuy={!user?.ownedTokens.find(t => t.id === i.id)} token={i} key={index} />
           ))}
       </Grid>
     </Box>
   )
 }
 
-export default Gallery
+export { Gallery }

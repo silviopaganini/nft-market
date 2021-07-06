@@ -1,7 +1,7 @@
 import { Flex, Heading, Box } from 'theme-ui'
 import { useHistory } from 'react-router'
 import { EtherSymbol } from '@ethersproject/constants'
-import { useStateContext } from '../../state'
+import { useAppState } from '../../state'
 import { Identicon } from '..'
 import { toShort } from '../../utils'
 
@@ -10,9 +10,7 @@ export type UserMenuProps = {
 }
 
 const UserMenu = () => {
-  const {
-    state: { user, isAuthenticated },
-  } = useStateContext()
+  const { user, isAuthenticated } = useAppState()
 
   const history = useHistory()
 
@@ -49,4 +47,4 @@ const UserMenu = () => {
   )
 }
 
-export default UserMenu
+export { UserMenu }

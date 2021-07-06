@@ -1,1 +1,1 @@
-export { default } from './MetamaskLogin'
+export * from './MetamaskLogin'

@@ -1,1 +1,1 @@
-export { default } from './TransactionProgress'
+export * from './TransactionProgress'

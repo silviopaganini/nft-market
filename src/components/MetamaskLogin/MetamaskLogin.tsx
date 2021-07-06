@@ -19,4 +19,4 @@ const MetamaskLogin = ({ onClickConnect }: MetamaskLoginProps) => {
   )
 }
 
-export default MetamaskLogin
+export { MetamaskLogin }

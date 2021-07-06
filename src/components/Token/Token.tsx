@@ -1,4 +1,4 @@
-import { FormEvent, MouseEvent, useState, useEffect } from 'react'
+import { FormEvent, MouseEvent, useState } from 'react'
 import { utils, BigNumber, constants } from 'ethers'
 import {
   Spinner,
@@ -14,9 +14,9 @@ import {
   NavLink,
 } from 'theme-ui'
 import useSWR from 'swr'
-import { useStateContext } from '../../state'
-import { fetcherMetadata } from '../../utils/fetchers'
-import { METADATA_API, toShort } from '../../utils'
+import { useAppState } from '../../state'
+import { fetcherMetadata, fetchOwner } from '../../utils/fetchers'
+import { formatPriceEth, METADATA_API, toShort } from '../../utils'
 
 export type TokenProps = {
   id: string
@@ -28,17 +28,9 @@ export type TokenProps = {
 export type TokenCompProps = {
   token: TokenProps
   isOnSale?: boolean
-  onTransfer?({ id, address }: { id: string; address: string }): Promise<boolean>
-  onBuy?({ id, price }: { id: string; price: BigNumber }): void
-  onSale?({
-    id,
-    price,
-    onSale,
-  }: {
-    id: string
-    price: BigNumber
-    onSale?: boolean
-  }): Promise<boolean>
+  onTransfer?: boolean
+  onBuy?: boolean
+  onSale?: boolean
 }
 
 const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) => {
@@ -46,63 +38,36 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
   const [onSaleActive, setOnSale] = useState<boolean>(false)
   const [address, setAddress] = useState<string>('')
   const [price, setPrice] = useState<string>('')
-  const [owner, setOwner] = useState<string>('')
-  const {
-    state: { user, ethPrice, contract },
-  } = useStateContext()
+  const { user, ethPrice, contractDetails, transferToken, buyToken, setTokenSale } = useAppState()
 
   const onTransferClick = async (e: FormEvent | MouseEvent) => {
     e.preventDefault()
-    try {
-      if (utils.isAddress(address) && onTransfer) {
-        const result = await onTransfer({ id: token.id, address })
-        if (result) {
-          setOnSale(false)
-        }
-      }
-    } catch (e) {
-      throw new Error(e)
+    if (onTransfer && utils.isAddress(address)) {
+      transferToken(token.id, address)
+      setTransfer(false)
     }
   }
 
   const onBuyClick = (e: MouseEvent) => {
     e.preventDefault()
-    onBuy && onBuy({ id: token.id, price: token.price })
+    onBuy && buyToken(token.id, token.price)
   }
 
   const onSaleClick = async (e: MouseEvent) => {
     e.preventDefault()
     if (!onSale) return
     try {
-      const result = await onSale({ id: token.id, price: utils.parseEther(price), onSale: true })
-      if (result) {
-        setOnSale(false)
-      }
+      await setTokenSale(token.id, utils.parseEther(price), true)
+      setOnSale(false)
     } catch (e) {
       throw new Error(e)
     }
   }
 
-  useEffect(() => {
-    const loadOwner = async () => {
-      try {
-        const owner = await contract?.payload.ownerOf(token.id)
-        setOwner(owner)
-      } catch (e) {
-        // throw new Error(e)
-        console.error(e)
-      }
-    }
-
-    loadOwner()
-  }, [contract, token.id])
-
+  const { data: owner } = useSWR(token.id, fetchOwner)
   const { data } = useSWR(`${METADATA_API}/token/${token.id}`, fetcherMetadata)
 
-  const tokenPriceEth = new Intl.NumberFormat('us-GB', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(Number(utils.formatEther(token.price)) * Number(ethPrice))
+  const tokenPriceEth = formatPriceEth(token.price, ethPrice)
 
   if (!data)
     return (
@@ -130,28 +95,30 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
               ({tokenPriceEth})
             </Text>
           </Heading>
+          {owner && !onTransfer && (
+            <Box mt={2}>
+              <Text as="p" sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>
+                Owner
+              </Text>
+              <NavLink
+                target="_blank"
+                href={`https://rinkeby.etherscan.io/address/${owner}`}
+                variant="owner"
+                style={{
+                  textOverflow: 'ellipsis',
+                  width: '100%',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                {toShort(owner)}
+              </NavLink>
+            </Box>
+          )}
           <Box mt={2}>
-            <Text as="p" sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>
-              Owner
-            </Text>
             <NavLink
               target="_blank"
-              href={`https://rinkeby.etherscan.io/address/${owner}`}
-              variant="owner"
-              style={{
-                textOverflow: 'ellipsis',
-                width: '100%',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              {toShort(owner)}
-            </NavLink>
-          </Box>
-          <Box mt={2}>
-            <NavLink
-              target="_blank"
-              href={`https://testnets.opensea.io/assets/${contract?.details.address}/${token.id}`}
+              href={`https://testnets.opensea.io/assets/${contractDetails?.address}/${token.id}`}
               variant="openSea"
             >
               View on Opensea.io
@@ -223,14 +190,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
                 {isOnSale ? (
                   <Button
                     mt={2}
-                    onClick={() =>
-                      onSale &&
-                      onSale({
-                        id: token.id,
-                        price: token.price,
-                        onSale: false,
-                      })
-                    }
+                    onClick={() => onSale && setTokenSale(token.id, token.price, false)}
                     variant="tertiary"
                   >
                     Remove from Sale
@@ -271,4 +231,4 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
   )
 }
 
-export default Token
+export { Token }

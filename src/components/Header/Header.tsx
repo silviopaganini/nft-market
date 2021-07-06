@@ -1,6 +1,6 @@
 import { useHistory, useLocation } from 'react-router'
 import { Box, NavLink, Flex, Heading, Image, Text } from 'theme-ui'
-import { useStateContext } from '../../state'
+import { useAppState } from '../../state'
 import { UserMenu } from '..'
 
 export type HeaderProps = {
@@ -11,9 +11,7 @@ const Header = () => {
   const history = useHistory()
   const location = useLocation()
 
-  const {
-    state: { user, isAuthenticated },
-  } = useStateContext()
+  const { user, isAuthenticated } = useAppState()
 
   return (
     <Box bg="black">
@@ -58,4 +56,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export { Header }

@@ -1,5 +1,5 @@
 import { Box, Heading, Grid, Text } from 'theme-ui'
-import { useStateContext } from '../../state'
+import { useAppState } from '../../state'
 import { ContractPropsDetails } from '../../types'
 
 export type ContractDetailsProps = {
@@ -7,9 +7,7 @@ export type ContractDetailsProps = {
 }
 
 const ContractDetails = () => {
-  const {
-    state: { contract },
-  } = useStateContext()
+  const { contract } = useAppState()
   return (
     <Box>
       <Heading as="h1">NFT Contract Details</Heading>
@@ -28,4 +26,4 @@ const ContractDetails = () => {
   )
 }
 
-export default ContractDetails
+export { ContractDetails }

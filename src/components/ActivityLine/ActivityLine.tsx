@@ -43,4 +43,4 @@ const ActivityLine = ({ activity }: ActivityLineProps) => {
   )
 }
 
-export default ActivityLine
+export { ActivityLine }

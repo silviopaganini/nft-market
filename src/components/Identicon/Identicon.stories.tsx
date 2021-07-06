@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react/types-6-0'
 
-import Identicon, { IdenticonProps } from './Identicon'
+import { Identicon, IdenticonProps } from './Identicon'
 
 export default {
   title: 'Primitives/Identicon',

@@ -6,13 +6,12 @@ import {
 import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } from '@web3-react/walletconnect-connector'
 
 import { FC, useEffect } from 'react'
-import { Text, Container, Heading } from 'theme-ui'
+import { Text, Heading } from 'theme-ui'
 import useSWR from 'swr'
-import { getContract, updateUser } from '../actions'
 import { useEagerConnect, useInactiveListener } from '../hooks/web3'
-import { ActionType, useStateContext } from '../state'
 import { ETHSCAN_API } from '../utils'
 import { fetcherETHUSD } from '../utils/fetchers'
+import { useAppState } from '../state'
 
 function getErrorMessage(error: Error) {
   console.log(error)
@@ -33,32 +32,25 @@ function getErrorMessage(error: Error) {
 }
 
 const Connect: FC = ({ children }) => {
-  const {
-    dispatch,
-    state: { activatingConnector },
-  } = useStateContext()
+  const { activatingConnector, setContract, setUser } = useAppState()
   const { library, chainId, account, error } = useWeb3React()
 
-  const { data: ethPrice } = useSWR(ETHSCAN_API, fetcherETHUSD)
-
-  useEffect(() => {
-    dispatch({ type: ActionType.ETH_PRICE, payload: ethPrice })
-  }, [ethPrice, dispatch])
+  useSWR(ETHSCAN_API, fetcherETHUSD)
 
   useEffect(() => {
     if (!chainId || !account || !library) return
 
     const update = async () => {
       try {
-        const contract = await getContract({ dispatch, library, chainId })
-        await updateUser({ contract, userAccount: account, library, dispatch })
+        await setContract(library, chainId)
+        setUser(account)
       } catch (e) {
         console.log(e)
       }
     }
 
     update()
-  }, [chainId, account, library, dispatch])
+  }, [chainId, account, library, setContract, setUser])
 
   const triedEager = useEagerConnect()
   useInactiveListener(!triedEager || !!activatingConnector)
@@ -66,10 +58,10 @@ const Connect: FC = ({ children }) => {
   return (
     <>
       {error ? (
-        <Container>
+        <>
           <Heading as="h2">❌ Something is not right</Heading>
           <Text sx={{ mt: 3 }}>{getErrorMessage(error)}</Text>
-        </Container>
+        </>
       ) : (
         children
       )}
@@ -77,4 +69,4 @@ const Connect: FC = ({ children }) => {
   )
 }
 
-export default Connect
+export { Connect }

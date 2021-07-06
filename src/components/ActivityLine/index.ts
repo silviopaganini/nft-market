@@ -1,1 +1,1 @@
-export { default } from './ActivityLine'
+export * from './ActivityLine'
