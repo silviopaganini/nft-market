@@ -1,3 +1,4 @@
+import { FC, useEffect, useCallback } from 'react'
 import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
 import {
   NoEthereumProviderError,
@@ -5,8 +6,7 @@ import {
 } from '@web3-react/injected-connector'
 import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } from '@web3-react/walletconnect-connector'
 
-import { FC, useEffect } from 'react'
-import { Text, Heading } from 'theme-ui'
+import { Container, Text, Heading } from 'theme-ui'
 import useSWR from 'swr'
 import { useEagerConnect, useInactiveListener } from '../hooks/web3'
 import { ETHSCAN_API } from '../utils'
@@ -19,7 +19,7 @@ function getErrorMessage(error: Error) {
   if (error instanceof NoEthereumProviderError) {
     return 'No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.'
   } else if (error instanceof UnsupportedChainIdError) {
-    return "You're connected to an unsupported network."
+    return "You're connected to an unsupported network. Please connect to Kinkeby network"
   } else if (
     error instanceof UserRejectedRequestErrorInjected ||
     error instanceof UserRejectedRequestErrorWalletConnect
@@ -32,8 +32,18 @@ function getErrorMessage(error: Error) {
 }
 
 const Connect: FC = ({ children }) => {
-  const { activatingConnector, setContract, setUser } = useAppState()
+  const { activatingConnector } = useAppState()
   const { library, chainId, account, error } = useWeb3React()
+
+  const { setContract, setUser } = useAppState(
+    useCallback(
+      ({ setContract, setUser }) => ({
+        setContract,
+        setUser,
+      }),
+      []
+    )
+  )
 
   useSWR(ETHSCAN_API, fetcherETHUSD)
 
@@ -58,10 +68,10 @@ const Connect: FC = ({ children }) => {
   return (
     <>
       {error ? (
-        <>
+        <Container>
           <Heading as="h2">❌ Something is not right</Heading>
           <Text sx={{ mt: 3 }}>{getErrorMessage(error)}</Text>
-        </>
+        </Container>
       ) : (
         children
       )}
