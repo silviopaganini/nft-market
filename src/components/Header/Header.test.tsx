@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { Header } from './Header'
 
 test(`Renders Header`, () => {
   render(
-    <BrowserRouter>
+    <Router>
       <Header />
-    </BrowserRouter>
+    </Router>
   )
 })
