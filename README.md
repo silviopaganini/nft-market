@@ -1,8 +1,9 @@
 # ERC721 NFT Marketplace 
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/silviopaganini/nft-market)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-![GitHub](https://img.shields.io/github/license/silviopaganini/nft-market?style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/silviopaganini/nft-market?style=round)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=round)](https://github.com/prettier/prettier)
+![GitHub](https://img.shields.io/github/license/silviopaganini/nft-market?style=round)
+![](https://img.shields.io/badge/Typescript-💪-blue)
 
 
 Prototype of a NFT Marketplace based on openZeppelin abstract upgradeable ERC721 contracts and Minting/uploading images to IPFS and integration with Opensea.io
