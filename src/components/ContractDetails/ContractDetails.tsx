@@ -7,17 +7,17 @@ export type ContractDetailsProps = {
 }
 
 const ContractDetails = () => {
-  const { contract } = useAppState()
+  const { contractDetails } = useAppState()
   return (
     <Box>
       <Heading as="h1">NFT Contract Details</Heading>
       <Grid my={3}>
-        {contract &&
-          Object.keys(contract.details).map(a => (
+        {contractDetails &&
+          Object.keys(contractDetails).map(a => (
             <Text key={a}>
               {a}:{' '}
               <Text variant="text.bold" as="span">
-                {contract.details[a as keyof ContractPropsDetails]}
+                {contractDetails[a as keyof ContractPropsDetails]}
               </Text>
             </Text>
           ))}

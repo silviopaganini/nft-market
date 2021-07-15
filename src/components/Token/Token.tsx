@@ -95,7 +95,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
               ({tokenPriceEth})
             </Text>
           </Heading>
-          {owner && !onTransfer && (
+          {owner && typeof owner === 'string' && !onTransfer && (
             <Box mt={2}>
               <Text as="p" sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>
                 Owner

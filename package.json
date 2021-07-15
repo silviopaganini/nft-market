@@ -42,7 +42,9 @@
     "web-vitals": "^2.0.1",
     "zustand": "^3.5.5"
   },
-  "resolutions": { "babel-loader": "8.1.0" },
+  "resolutions": {
+    "babel-loader": "8.1.0"
+  },
   "scripts": {
     "postinstall": "husky install",
     "start": "react-scripts start",
