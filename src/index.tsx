@@ -8,7 +8,7 @@ import { Root } from './layout'
 import theme from './theme'
 
 Sentry.init({
-  dsn: 'https://06951a956c7a4a6db2f776b1bc697efd@o72860.ingest.sentry.io/5842491',
+  dsn: '',
   integrations: [new Integrations.BrowserTracing()],
   enabled: process.env.NODE_ENV !== 'development',
 

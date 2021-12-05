@@ -23,7 +23,7 @@ const RPC_URLS: { [chainId: number]: string } = {
   4: process.env.REACT_APP_RPC_URL_4 as string,
 }
 
-export const injected = new InjectedConnector({ supportedChainIds: [5777, 1337, 4] })
+export const injected = new InjectedConnector({ supportedChainIds: [5777, 1337, 4, 100, 42] })
 
 // export const network = new NetworkConnector({
 //   urls: {

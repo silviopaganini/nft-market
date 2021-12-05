@@ -1,3 +1,4 @@
+import { useHistory, useLocation } from 'react-router'
 import { FormEvent, MouseEvent, useState } from 'react'
 import { utils, BigNumber, constants } from 'ethers'
 import {
@@ -39,6 +40,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
   const [address, setAddress] = useState<string>('')
   const [price, setPrice] = useState<string>('')
   const { user, ethPrice, contractDetails, transferToken, buyToken, setTokenSale } = useAppState()
+  const history = useHistory()
 
   const onTransferClick = async (e: FormEvent | MouseEvent) => {
     e.preventDefault()
@@ -48,9 +50,10 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
     }
   }
 
-  const onBuyClick = (e: MouseEvent) => {
-    e.preventDefault()
-    onBuy && buyToken(token.id, token.price)
+  const onBuyClick = (id: string) => {
+    history.push('/' + id)
+    // e.preventDefault()
+    // onBuy && buyToken(token.id, token.price)
   }
 
   const onSaleClick = async (e: MouseEvent) => {
@@ -65,7 +68,13 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
   }
 
   const { data: owner } = useSWR(token.id, fetchOwner)
-  const { data } = useSWR(`${METADATA_API}/token/${token.id}`, fetcherMetadata)
+  // const { data } = useSWR(`${METADATA_API}/token/${token.id}`, fetcherMetadata)
+
+  const data = {
+    name: 'Mangrove Forest',
+    image:
+      'https://www.iucn.org/sites/dev/files/styles/850x500_no_menu_article/public/content/images/2019/damsea_shutterstock.jpg?itok=jl0gxCm8',
+  }
 
   const tokenPriceEth = formatPriceEth(token.price, ethPrice)
 
@@ -78,17 +87,25 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
 
   if (!data.name) return null
 
+  console.log(token.price)
+
   return (
     <Card variant="nft">
       <Image
-        sx={{ width: '100%', bg: 'white', borderBottom: '1px solid black' }}
+        sx={{
+          width: '100%',
+          height: '320px',
+          bg: 'white',
+          borderBottom: '1px solid black',
+          objectFit: 'cover',
+        }}
         src={data.image}
       />
       <Box p={3} pt={2}>
         <Heading as="h2">{data.name}</Heading>
         <Divider variant="divider.nft" />
         <Box>
-          <Text sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>Price</Text>
+          <Text sx={{ color: 'lightBlue', fontSize: 1, fontWeight: 'bold' }}>Entry Fee</Text>
           <Heading as="h3" sx={{ color: 'green', m: 0, fontWeight: 'bold' }}>
             {constants.EtherSymbol} {Number(utils.formatEther(token.price)).toFixed(2)}{' '}
             <Text sx={{ color: 'navy' }} as="span" variant="text.body">
@@ -115,15 +132,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
               </NavLink>
             </Box>
           )}
-          <Box mt={2}>
-            <NavLink
-              target="_blank"
-              href={`https://testnets.opensea.io/assets/${contractDetails?.address}/${token.id}`}
-              variant="openSea"
-            >
-              View on Opensea.io
-            </NavLink>
-          </Box>
+          <Box mt={2}></Box>
         </Box>
 
         {onTransfer && (
@@ -219,10 +228,12 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
                   ? 'none'
                   : 'visible',
               }}
-              onClick={onBuyClick}
+              onClick={() => {
+                onBuyClick(token.id)
+              }}
               variant="quartiary"
             >
-              Buy Token
+              Visit
             </Button>
           </Flex>
         )}

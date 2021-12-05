@@ -1,9 +1,15 @@
+import Maker from '@makerdao/dai';
 import NFTT from '@fluuuid/nft-contracts/build/contracts/NFTT.json'
 import create from 'zustand'
 import { BigNumber, Contract, utils, Event } from 'ethers'
 
 import { TokenProps } from '../components/Token'
 import { ContractPropsDetails, UserProps } from '../types'
+
+const kovanAddresses = require('@charged-particles/protocol-subgraph/networks/kovan');
+const chargedParticlesAddress = kovanAddresses.chargedParticles.address;
+const chargedParticlesAbi = require('@charged-particles/protocol-subgraph/abis/ChargedParticles');
+
 export interface StateContext {
   isAuthenticated: boolean
   contract?: Contract
@@ -52,18 +58,19 @@ const useAppState = create<StateContext>((set, get) => ({
             return id
         }
       }
-      const deployedNetwork =
-        NFTT.networks[String(networkid(chainId)) as keyof typeof NFTT.networks]
 
-      if (!deployedNetwork) {
-        throw new Error('The network you selected is no supported yet.')
-      }
+      // const deployedNetwork =
+      //   NFTT.networks[String(networkid(chainId)) as keyof typeof NFTT.networks]
 
-      const { address } = deployedNetwork
-      const contract = new Contract(address, NFTT.abi, library.getSigner())
+      // if (!deployedNetwork) {
+      //   throw new Error('The network you selected is no supported yet.')
+      // }
 
-      const name = await contract.name()
-      const symbol = await contract.symbol()
+      const address = chargedParticlesAddress
+      const contract = new Contract(address, chargedParticlesAbi, library.getSigner())
+
+      const name = "PARTICLE" //await contract.name()
+      const symbol = "CHARGE" //await contract.symbol()
 
       set({
         library,
@@ -205,6 +212,52 @@ const useAppState = create<StateContext>((set, get) => ({
       console.log(e)
     }
   },
+  // chargeParticle: async () => {
+  //   try {
+
+  //   daiAddress = presets.Aave.v2.dai[chainId];
+  //   dai = new ethers.Contract(daiAddress, daiABI, daiSigner);
+  //   daiSigner = ethers.provider.getSigner(daiHodler);
+  //   const daiABI = require('../abis/dai');
+
+  //   const devUsdcJson = JSON.parse(JSON.stringify(devUsdcAbi));
+  //   const uscdContractInstance = new web3.eth.Contract(devUsdcJson.abi, contractAddresses.uscdAddress);
+
+
+  //     const { contract, user, setTransaction } = get()
+  //     if (!contract) throw new Error('No contract found')
+  //     if (!user) throw new Error('No user found')
+
+  //     const tx = await contract.setTokenSale(id, onSale, price, { from: user.address })
+  //     setTransaction(tx)
+  //     return true
+  //   } catch (e) {
+  //     console.log(e)
+  //     return false
+  //   }
+  //   const tx = await contract.purchaseToken(id, { value: price })
+
+  //   await signerD.sendTransaction({ to: daiHodler, value: toWei('10') }); // charge up the dai hodler with a few ether in order for it to be able to transfer us some tokens
+
+  //   await dai.connect(daiSigner).transfer(user1, toWei('10'));
+  //   await dai.connect(signer1)['approve(address,uint256)'](proton.address, toWei('10'));
+
+  //   const energizedParticleId = await callAndReturn({
+  //     contractInstance: proton,
+  //     contractMethod: 'createChargedParticle',
+  //     contractCaller: signer1,
+  //     contractParams: [
+  //       user1,                        // creator
+  //       user2,                        // receiver
+  //       user3,                        // referrer
+  //       TEST_NFT_TOKEN_URI,           // tokenMetaUri
+  //       'aave',                       // walletManagerId
+  //       daiAddress, // assetToken
+  //       toWei('10'),                  // assetAmount
+  //       annuityPct,                   // annuityPercent
+  //     ],
+  //   });
+  // }
 }))
 
 export { useAppState }

@@ -3,9 +3,11 @@
   "version": "2.0.0",
   "homepage": "https://nft.s2paganini.com",
   "dependencies": {
+    "@charged-particles/protocol-subgraph": "^1.3.3",
     "@ethersproject/constants": "^5.4.0",
     "@ethersproject/providers": "^5.4.0",
     "@fluuuid/nft-contracts": "silviopaganini/nft-contracts",
+    "@makerdao/dai": "^0.42.3",
     "@sentry/react": "^6.8.0",
     "@sentry/tracing": "^6.8.0",
     "@testing-library/jest-dom": "^5.14.1",

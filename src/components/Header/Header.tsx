@@ -24,12 +24,11 @@ const Header = () => {
           src="/static/logo.png"
         />
         <Heading sx={{ ml: [1, 2], color: 'white' }} as="h4">
-          ERC721 Marketplace{' '}
-          <Text sx={{ display: ['none', 'block'] }}>+ OpenSea.io on Rinkeby Network</Text>
+          Puerto Rico National Treasures{' '}
         </Heading>
         <UserMenu />
       </Flex>
-      {isAuthenticated && user && (
+      {/*      {isAuthenticated && user && (
         <Flex bg="midGray" py={3} sx={{ justifyContent: 'center' }}>
           <NavLink
             sx={{
@@ -52,6 +51,7 @@ const Header = () => {
           </NavLink>
         </Flex>
       )}
+*/}{' '}
     </Box>
   )
 }

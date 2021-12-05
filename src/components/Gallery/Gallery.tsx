@@ -21,26 +21,23 @@ const Gallery = () => {
 
   return (
     <Box>
-      <Heading as="h1">Marketplace</Heading>
-      <Flex sx={{ alignItems: 'center' }} mb={3}>
-        <Heading as="h3" sx={{ color: 'lightGray' }}>
-          Order:
-        </Heading>
-        <Flex ml={3}>
-          <Button
-            mr={2}
-            onClick={() => setOrder('alpha')}
-            variant="filter"
-            disabled={order === 'alpha'}
-          >
-            Alphabetically
-          </Button>
-          <Button onClick={() => setOrder('price')} variant="filter" disabled={order === 'price'}>
-            Price
-          </Button>
-        </Flex>
-      </Flex>
+      <Heading as="h1">National Treasures</Heading>
       <Grid gap={4} columns={['1fr 1fr', '1fr 1fr', '1fr 1fr 1fr']}>
+        <Token
+          onBuy={true}
+          token={{ id: '1', uri: '/', price: BigNumber.from('2000000000000000000'), name: 'test' }}
+          key={1}
+        />
+        {/*        <Token onBuy={true} token={{id: "2", uri: "/", price: BigNumber.from(100), name: "test"}} key={2} />
+        <Token onBuy={true} token={{id: "3", uri: "/", price: BigNumber.from(100), name: "test"}} key={3} />
+        <Token onBuy={true} token={{id: "4", uri: "/", price: BigNumber.from(100), name: "test"}} key={4} />
+        <Token onBuy={true} token={{id: "5", uri: "/", price: BigNumber.from(100), name: "test"}} key={5} />
+        <Token onBuy={true} token={{id: "6", uri: "/", price: BigNumber.from(100), name: "test"}} key={6} />
+        <Token onBuy={true} token={{id: "7", uri: "/", price: BigNumber.from(100), name: "test"}} key={7} />
+        <Token onBuy={true} token={{id: "8", uri: "/", price: BigNumber.from(100), name: "test"}} key={8} />
+        <Token onBuy={true} token={{id: "9", uri: "/", price: BigNumber.from(100), name: "test"}} key={9} />
+*/}
+
         {tokensOnSale
           ?.sort((a, b) =>
             order === 'alpha'

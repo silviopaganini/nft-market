@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Web3ReactProvider } from '@web3-react/core'
 import { Web3Provider } from '@ethersproject/providers'
 
-import { Marketplace, Profile, Connect } from './'
+import { Marketplace, Profile, Connect, Visit } from './'
 import { Header, PrivateRoute, TransactionProgress } from '../components'
 import { Container } from 'theme-ui'
 
@@ -22,6 +22,7 @@ const Root = () => {
             <Switch>
               <PrivateRoute path="/profile" component={Profile} />
               <Route exact path="/" component={Marketplace} />
+              <Route exact path="/:tokenId" component={Visit} />
             </Switch>
             <TransactionProgress />
           </Container>

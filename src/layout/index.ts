@@ -1,3 +1,4 @@
+export * from './Visit'
 export * from './Marketplace'
 export * from './Error'
 export * from './Root'
