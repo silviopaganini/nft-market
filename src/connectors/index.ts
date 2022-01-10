@@ -17,7 +17,7 @@ export enum ConnectorNames {
   WalletConnect = 'WalletConnect',
 }
 
-const POLLING_INTERVAL = 12000
+// const POLLING_INTERVAL = 12000
 const RPC_URLS: { [chainId: number]: string } = {
   1: process.env.REACT_APP_RPC_URL_1 as string,
   4: process.env.REACT_APP_RPC_URL_4 as string,
@@ -35,7 +35,7 @@ export const injected = new InjectedConnector({ supportedChainIds: [5777, 1337, 
 
 export const walletconnect = new WalletConnectConnector({
   qrcode: true,
-  pollingInterval: POLLING_INTERVAL,
+  // pollingInterval: POLLING_INTERVAL,
   infuraId: process.env.REACT_APP_INFURA_ID,
   rpc: { 4: RPC_URLS[4] },
   chainId: 4,

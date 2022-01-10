@@ -60,7 +60,7 @@ const Token = ({ token, isOnSale, onTransfer, onBuy, onSale }: TokenCompProps) =
       await setTokenSale(token.id, utils.parseEther(price), true)
       setOnSale(false)
     } catch (e) {
-      throw new Error(e)
+      throw e
     }
   }
 

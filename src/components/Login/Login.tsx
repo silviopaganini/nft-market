@@ -6,7 +6,8 @@ import { useAppState } from '../../state'
 
 const iconsMap = {
   [ConnectorNames.Metamask]: 'https://docs.metamask.io/metamask-fox.svg',
-  [ConnectorNames.WalletConnect]: 'https://walletconnect.org/walletconnect-logo.svg',
+  [ConnectorNames.WalletConnect]:
+    'https://raw.githubusercontent.com/WalletConnect/walletconnect-assets/b9644035864fb4b6d6ed55e0f67ad302377bd6f1/svg/original/walletconnect-logo.svg',
 }
 
 const Login = () => {

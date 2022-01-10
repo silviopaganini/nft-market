@@ -17,7 +17,7 @@ export const fetcherMetadata = async (url: string) => {
   try {
     return await (await fetch(url)).json()
   } catch (e) {
-    return { error: e.message }
+    return { error: (e as Error).message }
   }
 }
 
@@ -28,6 +28,6 @@ export const fetchOwner = async (id: string) => {
 
     return await contract?.ownerOf(id)
   } catch (e) {
-    return { error: e.message }
+    return { error: (e as Error).message }
   }
 }
